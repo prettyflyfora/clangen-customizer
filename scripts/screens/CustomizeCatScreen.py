@@ -64,15 +64,14 @@ class CustomizeCatScreen(Screens):
     def setup_cat(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
 
+        # check cat age to determine which sprite to show
         if self.the_cat.age in ["young adult", "adult", "senior adult"]:
             self.life_stage = "adult"
         else:
             self.life_stage = self.the_cat.age
-
         self.make_cat_sprite()
 
         title_text = ("customize " + str(self.the_cat.name))
-
         self.cat_elements["cat_name"] = pygame_gui.elements.UITextBox(
             title_text,
             ui_scale(pygame.Rect((0, 0), (-1, 40))),
@@ -82,6 +81,13 @@ class CustomizeCatScreen(Screens):
         )
         self.cat_elements["cat_name"].set_relative_position(ui_scale_offset((0, 100)))
 
+        # Set the accessory index to the current accessory
+        if self.the_cat.pelt.accessory in self.accessories:
+            self.accessory_index = self.accessories.index(self.the_cat.pelt.accessory)
+        else:
+            self.accessory_index = 0
+        self.update_accessory_display()
+
     def make_cat_sprite(self):
         # remove the old cat image
         if "cat_image" in self.cat_elements:
@@ -89,7 +95,6 @@ class CustomizeCatScreen(Screens):
 
         self.cat_image = generate_sprite(self.the_cat, self.life_stage, False, False, True,
                                          True)
-
         self.cat_elements["cat_image"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((30, 200), (250, 250))),
             pygame.transform.scale(self.cat_image, ui_scale_dimensions((250, 250))),
