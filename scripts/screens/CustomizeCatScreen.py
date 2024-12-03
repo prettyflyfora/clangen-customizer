@@ -59,7 +59,6 @@ class CustomizeCatScreen(Screens):
         )
 
         self.setup_cat()
-        self.update_accessory_display()
 
     def setup_cat(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
