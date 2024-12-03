@@ -9,7 +9,7 @@ from scripts.ui.get_arrow import get_arrow
 from scripts.utility import ui_scale
 
 
-class CatCustomizerScreen(Screens):
+class CustomizeCatScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.back_button = None

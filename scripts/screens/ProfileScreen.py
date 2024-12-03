@@ -202,9 +202,9 @@ class ProfileScreen(Screens):
                     self.update_disabled_buttons_and_text()
                 else:
                     print("invalid next cat", self.previous_cat)
-            elif event.ui_element == self.cat_customizer_button:
+            elif event.ui_element == self.customize_cat_button:
                 self.close_current_tab()
-                self.change_screen("cat customizer screen")
+                self.change_screen("customize cat screen")
             elif event.ui_element == self.inspect_button:
                 self.close_current_tab()
                 self.change_screen("sprite inspect screen")
@@ -472,7 +472,7 @@ class ProfileScreen(Screens):
             get_button_dict(ButtonStyles.ICON, (34, 34)),
             object_id="@buttonstyles_icon",
         )
-        self.cat_customizer_button = UISurfaceImageButton(
+        self.customize_cat_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((615, 63), (120, 28))),
             "customize cat",
             get_button_dict(ButtonStyles.ROUNDED_RECT, (120, 28)),
@@ -579,7 +579,7 @@ class ProfileScreen(Screens):
         self.placeholder_tab_3.kill()
         self.placeholder_tab_4.kill()
         self.inspect_button.kill()
-        self.cat_customizer_button.kill()
+        self.customize_cat_button.kill()
         self.close_current_tab()
 
     def build_profile(self):
