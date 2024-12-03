@@ -466,18 +466,18 @@ class ProfileScreen(Screens):
             object_id="@buttonstyles_squoval",
             manager=MANAGER,
         )
+        self.customize_cat_button = UISurfaceImageButton(
+            ui_scale(pygame.Rect((605, 60), (130, 34))),
+            "Customize Cat",
+            get_button_dict(ButtonStyles.SQUOVAL, (130, 34)),
+            object_id="@buttonstyles_squoval",
+            manager=MANAGER,
+        )
         self.inspect_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((741, 60), (34, 34))),
             Icon.MAGNIFY,
             get_button_dict(ButtonStyles.ICON, (34, 34)),
             object_id="@buttonstyles_icon",
-        )
-        self.customize_cat_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((615, 63), (120, 28))),
-            "customize cat",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (120, 28)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER,
         )
         self.relations_tab_button = UISurfaceImageButton(
             ui_scale(pygame.Rect((48, 420), (176, 30))),
