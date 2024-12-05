@@ -165,9 +165,14 @@ class CustomizeCatScreen(Screens):
         self.make_heterochromia_checkbox()
         self.update_eye_colour_display()
 
+        # disable poses for newborns and paralyzed
+        if self.the_cat.age == "newborn" or self.the_cat.pelt.paralyzed == True:
+            self.pose_left_button.disable()
+            self.pose_right_button.disable()
+
         # set the pose index to the current pose
         self.set_poses()
-        self.cat_elements["current_pose"] = self.the_cat.pelt.cat_sprites[self.life_stage]
+        self.cat_elements["current_pose"] = self.the_cat.pelt.cat_sprites[self.the_cat.age]
         self.update_pose_display()
 
         # set the pelt length index to the current pelt length
@@ -299,16 +304,16 @@ class CustomizeCatScreen(Screens):
         self.make_cat_sprite()
 
     def set_poses(self):
-        if self.life_stage == "kitten":
+        if self.the_cat.age == "kitten":
             self.poses = [0,1,2]
-        elif self.life_stage == "adolescent":
+        elif self.the_cat.age == "adolescent":
             self.poses = [3,4,5]
-        elif self.life_stage == "adult":
+        elif self.the_cat.age == "adult":
             if self.the_cat.pelt.length != "long":
                 self.poses = [6,7,8]
             else:
                 self.poses = [9,10,11]
-        elif self.life_stage == "senior":
+        elif self.the_cat.age == "senior":
             self.poses = [12,13,14]
 
     def change_pose(self, direction):
@@ -316,9 +321,29 @@ class CustomizeCatScreen(Screens):
         new_index = (current_index + direction) % len(self.poses)
         self.cat_elements["current_pose"] = self.poses[new_index]
         self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
-        self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
         self.update_pose_display()
         self.make_cat_sprite()
+
+    def handle_sprites_for_pelt_length(self, previous_length):
+        if (previous_length == "long" and self.the_cat.pelt.length != "long") or (
+                previous_length != "long" and self.the_cat.pelt.length == "long"):
+            self.set_poses()
+            self.cat_elements["current_pose"] = self.poses[0]
+
+            if self.life_stage == "adult":
+                self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
+                self.update_pose_display()
+                self.make_cat_sprite()
+            else:
+                # if the previous length was long, set the cat's adult sprite to random short pelt
+                if previous_length == "long":
+                    self.the_cat.pelt.cat_sprites['adult'] = random.randint(6, 8)
+                    # set paralyzed adult sprite to the short pelt
+                    self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 12
+                # if the previous length was not long, set the cat's adult sprite to random long pelt
+                else:
+                    self.the_cat.pelt.cat_sprites['adult'] = random.randint(9, 11)
+                    self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 15 # reset to the first pose in the updated list
 
     def update_pose_display(self):
         if "pose" in self.cat_elements:
@@ -337,19 +362,7 @@ class CustomizeCatScreen(Screens):
             self.pelt_lengths)
         self.the_cat.pelt.length = self.pelt_lengths[self.cat_elements["pelt_length_index"]]
         self.update_pelt_length_display()
-
-        if (previous_length == "long" and self.the_cat.pelt.length != "long") or (
-                previous_length != "long" and self.the_cat.pelt.length == "long"):
-            self.set_poses()
-            self.cat_elements["current_pose"] = self.poses[0]  # reset to the first pose in the updated list
-
-            if self.life_stage == "adult":
-                if self.the_cat.age in ["young adult", "senior adult"]:
-                    # updates the young adult/senior adult sprite (temporary, doesn't affect clan_cats)
-                    self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
-                self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
-                self.update_pose_display()
-                self.make_cat_sprite()
+        self.handle_sprites_for_pelt_length(previous_length)
 
     def update_pelt_length_display(self):
         if "pelt_length" in self.cat_elements:
