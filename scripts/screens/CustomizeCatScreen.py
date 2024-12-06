@@ -1,8 +1,6 @@
 import random
-
 import pygame
 import pygame_gui
-
 from scripts.cat.cats import Cat
 from scripts.cat.pelts import Pelt
 from scripts.game_structure.game_essentials import game
@@ -11,8 +9,7 @@ from scripts.game_structure.ui_elements import UISurfaceImageButton, UIImageButt
 from scripts.screens.Screens import Screens
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.get_arrow import get_arrow
-from scripts.utility import ui_scale, generate_sprite, ui_scale_offset, ui_scale_dimensions, \
-    get_text_box_theme
+from scripts.utility import ui_scale, generate_sprite, ui_scale_offset, ui_scale_dimensions, get_text_box_theme
 
 class CustomizeCatScreen(Screens):
     def __init__(self, name=None):
@@ -41,118 +38,56 @@ class CustomizeCatScreen(Screens):
 
     def screen_switches(self):
         super().screen_switches()
+        self.setup_buttons()
+        self.setup_cat()
 
-        self.back_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((25, 25), (105, 30))),
-            get_arrow(2) + " Back",
-            get_button_dict(ButtonStyles.SQUOVAL, (105, 30)),
-            object_id="@buttonstyles_squoval",
+    def setup_buttons(self):
+        self.back_button = self.create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
+        self.eye1_left_button = self.create_button((350, 400), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.eye1_right_button = self.create_button((590, 400), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.enable_heterchromia_text = self.create_text_box("enable\nheterochromia", (670, 400), (100, 100))
+        self.eye2_left_button = self.create_button((350, 450), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.eye2_right_button = self.create_button((590, 450), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = self.create_button((350, 500), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = self.create_button((590, 500), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_left_button = self.create_button((350, 550), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = self.create_button((590, 550), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.accessory_left_button = self.create_button((350, 600), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.accessory_right_button = self.create_button((590, 600), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.remove_accessory_button = self.create_button((670, 600), (100, 30), "Remove", ButtonStyles.ROUNDED_RECT)
+
+    def create_button(self, pos, size, text, style):
+        return UISurfaceImageButton(
+            ui_scale(pygame.Rect(pos, size)),
+            text,
+            get_button_dict(style, size),
+            object_id=f"@buttonstyles_{style.name.lower()}",
             manager=MANAGER
         )
-        self.eye1_left_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((350, 400), (60, 30))),
-            get_arrow(2),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.eye1_right_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((590, 400), (60, 30))),
-            get_arrow(2, False),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.enable_heterchromia_text = pygame_gui.elements.UITextBox(
-            "enable\nheterochromia",
-            ui_scale(pygame.Rect((670, 400), (100, 100))),
+
+    def create_text_box(self, text, pos, size):
+        return pygame_gui.elements.UITextBox(
+            text,
+            ui_scale(pygame.Rect(pos, size)),
             manager=MANAGER,
             object_id=get_text_box_theme("#text_box_22_horizcenter")
         )
-        self.eye2_left_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((350, 450), (60, 30))),
-            get_arrow(2),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.eye2_right_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((590, 450), (60, 30))),
-            get_arrow(2, False),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.pose_left_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((350, 500), (60, 30))),
-            get_arrow(2),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.pose_right_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((590, 500), (60, 30))),
-            get_arrow(2, False),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.pelt_length_left_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((350, 550), (60, 30))),
-            get_arrow(2),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.pelt_length_right_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((590, 550), (60, 30))),
-            get_arrow(2, False),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.accessory_left_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((350, 600), (60, 30))),
-            get_arrow(2),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.accessory_right_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((590, 600), (60, 30))),
-            get_arrow(2, False),
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (60, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-        self.remove_accessory_button = UISurfaceImageButton(
-            ui_scale(pygame.Rect((670, 600), (100, 30))),
-            "Remove",
-            get_button_dict(ButtonStyles.ROUNDED_RECT, (100, 30)),
-            object_id="@buttonstyles_rounded_rect",
-            manager=MANAGER
-        )
-
-        self.setup_cat()
 
     def setup_cat(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
-
-        # check cat age to determine which sprite to show
         self.get_cat_age()
         self.make_cat_sprite()
+        self.setup_cat_elements()
 
-        title_text = ("customize " + str(self.the_cat.name))
-        self.cat_elements["cat_name"] = pygame_gui.elements.UITextBox(
-            title_text,
-            ui_scale(pygame.Rect((0, 0), (-1, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter"),
-            anchors={"centerx": "centerx"}
-        )
+    def setup_cat_elements(self):
+        self.cat_elements["cat_name"] = self.create_text_box(f"customize {self.the_cat.name}", (0, 0), (-1, 40))
         self.cat_elements["cat_name"].set_relative_position(ui_scale_offset((0, 100)))
+        self.setup_eye_colours()
+        self.setup_poses()
+        self.setup_pelt_length()
+        self.setup_accessory()
 
-        # set the eye colour index to the current eye colours
+    def setup_eye_colours(self):
         self.cat_elements["eye1_index"] = self.eye_colours.index(self.the_cat.pelt.eye_colour)
         if self.the_cat.pelt.eye_colour2 is None:
             self.cat_elements["eye2_index"] = "none"
@@ -165,21 +100,19 @@ class CustomizeCatScreen(Screens):
         self.make_heterochromia_checkbox()
         self.update_eye_colour_display()
 
-        # disable poses for newborns and paralyzed
-        if self.the_cat.age == "newborn" or self.the_cat.pelt.paralyzed == True:
+    def setup_poses(self):
+        if self.life_stage == "newborn" or self.the_cat.pelt.paralyzed:
             self.pose_left_button.disable()
             self.pose_right_button.disable()
-
-        # set the pose index to the current pose
         self.set_poses()
-        self.cat_elements["current_pose"] = self.the_cat.pelt.cat_sprites[self.the_cat.age]
+        self.cat_elements["current_pose"] = self.the_cat.pelt.cat_sprites[self.life_stage]
         self.update_pose_display()
 
-        # set the pelt length index to the current pelt length
+    def setup_pelt_length(self):
         self.cat_elements["pelt_length_index"] = self.pelt_lengths.index(self.the_cat.pelt.length)
         self.update_pelt_length_display()
 
-        # set the accessory index to the current accessory
+    def setup_accessory(self):
         if self.the_cat.pelt.accessory in self.accessories:
             self.cat_elements["accessory_index"] = self.accessories.index(self.the_cat.pelt.accessory)
         else:
@@ -187,106 +120,85 @@ class CustomizeCatScreen(Screens):
         self.update_accessory_display()
 
     def get_cat_age(self):
-        if self.the_cat.age in ["young adult", "adult", "senior adult"]:
-            self.life_stage = "adult"
-        else:
-            self.life_stage = self.the_cat.age
+        self.life_stage = "adult" if self.the_cat.age in ["young adult", "adult", "senior adult"] else self.the_cat.age
 
     def make_cat_sprite(self):
-        # remove the old cat image
         if "cat_image" in self.cat_elements:
             self.cat_elements["cat_image"].kill()
-
-        self.cat_image = generate_sprite(self.the_cat, self.life_stage, False, False, True,
-                                         True)
+        self.cat_image = generate_sprite(self.the_cat, self.life_stage, False, False, True, True)
         self.cat_elements["cat_image"] = pygame_gui.elements.UIImage(
             ui_scale(pygame.Rect((30, 200), (250, 250))),
-            pygame.transform.scale(self.cat_image, ui_scale_dimensions((250, 250)))
+            pygame.transform.scale(self.cat_image, ui_scale_dimensions((250, 250))),
+            manager=MANAGER
         )
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.back_button:
-                # removes second eye colour if it's the same as the first
-                if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
-                    self.the_cat.pelt.eye_colour2 = None
-                self.change_screen("profile screen")
-            elif event.ui_element == self.eye1_left_button:
-                self.change_eye_colour(1, "left")
-            elif event.ui_element == self.eye1_right_button:
-                self.change_eye_colour(-1, "left")
-            elif event.ui_element == self.eye2_left_button:
-                self.change_eye_colour(1, "right")
-            elif event.ui_element == self.eye2_right_button:
-                self.change_eye_colour(-1, "right")
+                self.handle_back_button()
+            elif event.ui_element in [self.eye1_left_button, self.eye1_right_button, self.eye2_left_button, self.eye2_right_button]:
+                self.handle_eye_buttons(event.ui_element)
             elif event.ui_element == self.heterochromia_checkbox:
                 self.handle_heterochromia_checkbox()
-            elif event.ui_element == self.pelt_length_left_button:
-                self.change_pelt_length(-1)
-            elif event.ui_element == self.pelt_length_right_button:
-                self.change_pelt_length(1)
-            elif event.ui_element == self.pose_left_button:
-                self.change_pose(-1)
-            elif event.ui_element == self.pose_right_button:
-                self.change_pose(1)
-            elif event.ui_element == self.accessory_left_button:
-                self.change_accessory(-1)
-            elif event.ui_element == self.accessory_right_button:
-                self.change_accessory(1)
+            elif event.ui_element in [self.pelt_length_left_button, self.pelt_length_right_button]:
+                self.handle_pelt_length_buttons(event.ui_element)
+            elif event.ui_element in [self.pose_left_button, self.pose_right_button]:
+                self.handle_pose_buttons(event.ui_element)
+            elif event.ui_element in [self.accessory_left_button, self.accessory_right_button]:
+                self.handle_accessory_buttons(event.ui_element)
             elif event.ui_element == self.remove_accessory_button:
                 self.remove_accessory()
+
+    def handle_back_button(self):
+        if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
+            self.the_cat.pelt.eye_colour2 = None
+        self.change_screen("profile screen")
+
+    def handle_eye_buttons(self, button):
+        direction = 1 if button in [self.eye1_left_button, self.eye2_left_button] else -1
+        eye = "left" if button in [self.eye1_left_button, self.eye1_right_button] else "right"
+        self.change_eye_colour(direction, eye)
+
+    def handle_pelt_length_buttons(self, button):
+        direction = -1 if button == self.pelt_length_left_button else 1
+        self.change_pelt_length(direction)
+
+    def handle_pose_buttons(self, button):
+        direction = -1 if button == self.pose_left_button else 1
+        self.change_pose(direction)
+
+    def handle_accessory_buttons(self, button):
+        direction = -1 if button == self.accessory_left_button else 1
+        self.change_accessory(direction)
 
     def change_eye_colour(self, direction, eye):
         if eye == "left":
             self.the_cat.pelt.eye_colour = self.eye_colours[
                 (self.eye_colours.index(self.the_cat.pelt.eye_colour) + direction) % len(self.eye_colours)
-                ]
+            ]
         else:
             self.the_cat.pelt.eye_colour2 = self.eye_colours[
                 (self.eye_colours.index(self.the_cat.pelt.eye_colour2) + direction) % len(self.eye_colours)
-                ]
+            ]
         self.update_eye_colour_display()
         self.make_cat_sprite()
 
     def update_eye_colour_display(self):
-        if "eye_colour" in self.cat_elements:
-            self.cat_elements["eye_colour"].kill()
-        if "eye_colour2" in self.cat_elements:
-            self.cat_elements["eye_colour2"].kill()
-
-        self.cat_elements["eye_colour"] = pygame_gui.elements.UITextBox(
-            self.the_cat.pelt.eye_colour.lower(),
-            ui_scale(pygame.Rect((400, 400), (200, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter")
-        )
-
+        self.kill_element("eye_colour")
+        self.kill_element("eye_colour2")
+        self.cat_elements["eye_colour"] = self.create_text_box(self.the_cat.pelt.eye_colour.lower(), (400, 400), (200, 40))
         eye_colour2_text = self.the_cat.pelt.eye_colour2 if self.the_cat.pelt.eye_colour2 else "none"
-        self.cat_elements["eye_colour2"] = pygame_gui.elements.UITextBox(
-            eye_colour2_text.lower(),
-            ui_scale(pygame.Rect((400, 450), (200, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter")
-        )
+        self.cat_elements["eye_colour2"] = self.create_text_box(eye_colour2_text.lower(), (400, 450), (200, 40))
 
     def make_heterochromia_checkbox(self):
-        if "heterochromia_checkbox" in self.cat_elements:
-            self.cat_elements["heterochromia_checkbox"].kill()
-
-        if self.heterochromia is True:
-            self.heterochromia_checkbox = UIImageButton(
-                ui_scale(pygame.Rect((705, 450), (30, 30))),
-                "",
-                object_id="@checked_checkbox",
-                starting_height=2
-            )
-        else:
-            self.heterochromia_checkbox = UIImageButton(
-                ui_scale(pygame.Rect((705, 450), (30, 30))),
-                "",
-                object_id="@unchecked_checkbox",
-                starting_height=2
-            )
+        self.kill_element("heterochromia_checkbox")
+        checkbox_id = "@checked_checkbox" if self.heterochromia else "@unchecked_checkbox"
+        self.heterochromia_checkbox = UIImageButton(
+            ui_scale(pygame.Rect((705, 450), (30, 30))),
+            "",
+            object_id=checkbox_id,
+            starting_height=2
+        )
         self.cat_elements["heterochromia_checkbox"] = self.heterochromia_checkbox
 
     def handle_heterochromia_checkbox(self):
@@ -304,23 +216,19 @@ class CustomizeCatScreen(Screens):
         self.make_cat_sprite()
 
     def set_poses(self):
-        if self.the_cat.age == "kitten":
-            self.poses = [0,1,2]
-        elif self.the_cat.age == "adolescent":
-            self.poses = [3,4,5]
-        elif self.the_cat.age == "adult":
-            if self.the_cat.pelt.length != "long":
-                self.poses = [6,7,8]
-            else:
-                self.poses = [9,10,11]
-        elif self.the_cat.age == "senior":
-            self.poses = [12,13,14]
+        age_poses = {
+            "kitten": [0, 1, 2],
+            "adolescent": [3, 4, 5],
+            "adult": [6, 7, 8] if self.the_cat.pelt.length != "long" else [9, 10, 11],
+            "senior": [12, 13, 14]
+        }
+        self.poses = age_poses.get(self.life_stage, [])
 
     def change_pose(self, direction):
         current_index = self.poses.index(self.cat_elements["current_pose"])
         new_index = (current_index + direction) % len(self.poses)
         self.cat_elements["current_pose"] = self.poses[new_index]
-        self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
+        self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
         self.update_pose_display()
         self.make_cat_sprite()
 
@@ -329,58 +237,32 @@ class CustomizeCatScreen(Screens):
                 previous_length != "long" and self.the_cat.pelt.length == "long"):
             self.set_poses()
             self.cat_elements["current_pose"] = self.poses[0]
-
             if self.life_stage == "adult":
-                self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
+                self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
                 self.update_pose_display()
                 self.make_cat_sprite()
             else:
-                # if the previous length was long, set the cat's adult sprite to random short pelt
-                if previous_length == "long":
-                    self.the_cat.pelt.cat_sprites['adult'] = random.randint(6, 8)
-                    # set paralyzed adult sprite to the short pelt
-                    self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 12
-                # if the previous length was not long, set the cat's adult sprite to random long pelt
-                else:
-                    self.the_cat.pelt.cat_sprites['adult'] = random.randint(9, 11)
-                    self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 15 # reset to the first pose in the updated list
+                self.the_cat.pelt.cat_sprites['adult'] = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
+                self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 12 if previous_length == "long" else 15
 
     def update_pose_display(self):
-        if "pose" in self.cat_elements:
-            self.cat_elements["pose"].kill()
-
-        self.cat_elements["pose"] = pygame_gui.elements.UITextBox(
-            str(self.cat_elements["current_pose"]),
-            ui_scale(pygame.Rect((400, 500), (200, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter")
-        )
+        self.kill_element("pose")
+        self.cat_elements["pose"] = self.create_text_box(str(self.cat_elements["current_pose"]), (400, 500), (200, 40))
 
     def change_pelt_length(self, direction):
         previous_length = self.the_cat.pelt.length
-        self.cat_elements["pelt_length_index"] = (self.cat_elements["pelt_length_index"] + direction) % len(
-            self.pelt_lengths)
+        self.cat_elements["pelt_length_index"] = (self.cat_elements["pelt_length_index"] + direction) % len(self.pelt_lengths)
         self.the_cat.pelt.length = self.pelt_lengths[self.cat_elements["pelt_length_index"]]
         self.update_pelt_length_display()
         self.handle_sprites_for_pelt_length(previous_length)
 
     def update_pelt_length_display(self):
-        if "pelt_length" in self.cat_elements:
-            self.cat_elements["pelt_length"].kill()
-
-        self.cat_elements["pelt_length"] = pygame_gui.elements.UITextBox(
-            self.the_cat.pelt.length.lower(),
-            ui_scale(pygame.Rect((400, 550), (200, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter")
-        )
+        self.kill_element("pelt_length")
+        self.cat_elements["pelt_length"] = self.create_text_box(self.the_cat.pelt.length.lower(), (400, 550), (200, 40))
 
     def change_accessory(self, direction):
-        if self.the_cat.pelt.accessory:
-            self.the_cat.pelt.accessory = None
-
-        self.cat_elements["accessory_index"] = (self.cat_elements["accessory_index"] + direction) % len(
-            self.accessories)
+        self.the_cat.pelt.accessory = None
+        self.cat_elements["accessory_index"] = (self.cat_elements["accessory_index"] + direction) % len(self.accessories)
         self.the_cat.pelt.accessory = self.accessories[self.cat_elements["accessory_index"]]
         self.update_accessory_display()
         self.make_cat_sprite()
@@ -392,15 +274,8 @@ class CustomizeCatScreen(Screens):
 
     def update_accessory_display(self):
         accessory_name = self.accessories[self.cat_elements["accessory_index"]] if self.the_cat.pelt.accessory else "no accessory"
-        if "accessory_name" in self.cat_elements:
-            self.cat_elements["accessory_name"].kill()
-
-        self.cat_elements["accessory_name"] = pygame_gui.elements.UITextBox(
-            accessory_name.lower(),
-            ui_scale(pygame.Rect((400, 600), (200, 40))),
-            manager=MANAGER,
-            object_id=get_text_box_theme("#text_box_34_horizcenter")
-        )
+        self.kill_element("accessory_name")
+        self.cat_elements["accessory_name"] = self.create_text_box(accessory_name.lower(), (400, 600), (200, 40))
 
     def exit_screen(self):
         self.back_button.kill()
@@ -412,17 +287,19 @@ class CustomizeCatScreen(Screens):
             "heterochromia_checkbox", "accessory_name"
         ]
         for element in elements_to_kill:
-            if element in self.cat_elements:
-                self.cat_elements[element].kill()
-        self.eye1_left_button.kill()
-        self.eye1_right_button.kill()
-        self.eye2_left_button.kill()
-        self.eye2_right_button.kill()
-        self.enable_heterchromia_text.kill()
-        self.pelt_length_left_button.kill()
-        self.pelt_length_right_button.kill()
-        self.pose_left_button.kill()
-        self.pose_right_button.kill()
-        self.accessory_left_button.kill()
-        self.accessory_right_button.kill()
-        self.remove_accessory_button.kill()
+            self.kill_element(element)
+        self.kill_buttons()
+
+    def kill_element(self, element_name):
+        if element_name in self.cat_elements:
+            self.cat_elements[element_name].kill()
+
+    def kill_buttons(self):
+        buttons = [
+            self.eye1_left_button, self.eye1_right_button, self.eye2_left_button, self.eye2_right_button,
+            self.enable_heterchromia_text, self.pelt_length_left_button, self.pelt_length_right_button,
+            self.pose_left_button, self.pose_right_button, self.accessory_left_button, self.accessory_right_button,
+            self.remove_accessory_button
+        ]
+        for button in buttons:
+            button.kill()
