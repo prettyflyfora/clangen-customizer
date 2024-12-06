@@ -229,6 +229,8 @@ class CustomizeCatScreen(Screens):
         new_index = (current_index + direction) % len(self.poses)
         self.cat_elements["current_pose"] = self.poses[new_index]
         self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
+        if self.life_stage == "adult":
+            self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
         self.update_pose_display()
         self.make_cat_sprite()
 
