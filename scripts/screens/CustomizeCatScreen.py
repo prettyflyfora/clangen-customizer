@@ -23,7 +23,7 @@ class CustomizeCatScreen(Screens):
         self.eye1_right_button = None
         self.eye2_left_button = None
         self.eye2_right_button = None
-        self.enable_heterchromia_text = None
+        self.enable_heterochromia_text = None
         self.eye_colours = Pelt.eye_colours
         self.pelt_length_left_button = None
         self.pelt_length_right_button = None
@@ -46,7 +46,7 @@ class CustomizeCatScreen(Screens):
         self.back_button = self.create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
         self.eye1_left_button = self.create_button((350, 400), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
         self.eye1_right_button = self.create_button((590, 400), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
-        self.enable_heterchromia_text = self.create_text_box("enable\nheterochromia", (670, 400), (100, 100))
+        self.enable_heterochromia_text = self.create_text_box("enable\nheterochromia", (670, 400), (100, 100))
         self.eye2_left_button = self.create_button((350, 450), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
         self.eye2_right_button = self.create_button((590, 450), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
         self.pose_left_button = self.create_button((350, 500), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
@@ -302,7 +302,7 @@ class CustomizeCatScreen(Screens):
     def kill_buttons(self):
         buttons = [
             self.eye1_left_button, self.eye1_right_button, self.eye2_left_button, self.eye2_right_button,
-            self.enable_heterchromia_text, self.pelt_length_left_button, self.pelt_length_right_button,
+            self.enable_heterochromia_text, self.pelt_length_left_button, self.pelt_length_right_button,
             self.pose_left_button, self.pose_right_button, self.accessory_left_button, self.accessory_right_button,
             self.remove_accessory_button
         ]
