@@ -31,6 +31,9 @@ class CustomizeCatScreen(Screens):
         self.pose_right_button = None
         self.pose_left_button = None
         self.poses = None
+        self.skin_left_button = None
+        self.skin_right_button = None
+        self.skins = Pelt.skin_sprites
         self.accessory_left_button = None
         self.accessory_right_button = None
         self.remove_accessory_button = None
@@ -44,15 +47,17 @@ class CustomizeCatScreen(Screens):
 
     def setup_buttons(self):
         self.back_button = self.create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
-        self.eye1_left_button = self.create_button((350, 400), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
-        self.eye1_right_button = self.create_button((590, 400), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
-        self.enable_heterochromia_text = self.create_text_box("enable\nheterochromia", (670, 400), (100, 100))
-        self.eye2_left_button = self.create_button((350, 450), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
-        self.eye2_right_button = self.create_button((590, 450), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
-        self.pose_left_button = self.create_button((350, 500), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
-        self.pose_right_button = self.create_button((590, 500), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_left_button = self.create_button((350, 550), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_right_button = self.create_button((590, 550), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.eye1_left_button = self.create_button((350, 350), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.eye1_right_button = self.create_button((590, 350), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.enable_heterochromia_text = self.create_text_box("enable\nheterochromia", (670, 350), (100, 100))
+        self.eye2_left_button = self.create_button((350, 400), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.eye2_right_button = self.create_button((590, 400), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = self.create_button((350, 450), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = self.create_button((590, 450), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_left_button = self.create_button((350, 500), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = self.create_button((590, 500), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
+        self.skin_left_button = self.create_button((350, 550), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
+        self.skin_right_button = self.create_button((590, 550), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
         self.accessory_left_button = self.create_button((350, 600), (60, 30), get_arrow(2), ButtonStyles.ROUNDED_RECT)
         self.accessory_right_button = self.create_button((590, 600), (60, 30), get_arrow(2, False), ButtonStyles.ROUNDED_RECT)
         self.remove_accessory_button = self.create_button((670, 600), (100, 30), "Remove", ButtonStyles.ROUNDED_RECT)
@@ -86,6 +91,7 @@ class CustomizeCatScreen(Screens):
         self.setup_eye_colours()
         self.setup_poses()
         self.setup_pelt_length()
+        self.setup_skin()
         self.setup_accessory()
 
     def setup_eye_colours(self):
@@ -112,6 +118,10 @@ class CustomizeCatScreen(Screens):
     def setup_pelt_length(self):
         self.cat_elements["pelt_length_index"] = self.pelt_lengths.index(self.the_cat.pelt.length)
         self.update_pelt_length_display()
+
+    def setup_skin(self):
+        self.cat_elements["skin_index"] = self.skins.index(self.the_cat.pelt.skin)
+        self.update_skin_display()
 
     def setup_accessory(self):
         if self.the_cat.pelt.accessory in self.accessories:
@@ -145,6 +155,8 @@ class CustomizeCatScreen(Screens):
                 self.handle_pelt_length_buttons(event.ui_element)
             elif event.ui_element in [self.pose_left_button, self.pose_right_button]:
                 self.handle_pose_buttons(event.ui_element)
+            elif event.ui_element in [self.skin_left_button, self.skin_right_button]:
+                self.handle_skin_buttons(event.ui_element)
             elif event.ui_element in [self.accessory_left_button, self.accessory_right_button]:
                 self.handle_accessory_buttons(event.ui_element)
             elif event.ui_element == self.remove_accessory_button:
@@ -168,6 +180,10 @@ class CustomizeCatScreen(Screens):
         direction = -1 if button == self.pose_left_button else 1
         self.change_pose(direction)
 
+    def handle_skin_buttons(self, button):
+        direction = -1 if button == self.skin_left_button else 1
+        self.change_skin(direction)
+
     def handle_accessory_buttons(self, button):
         direction = -1 if button == self.accessory_left_button else 1
         self.change_accessory(direction)
@@ -187,15 +203,15 @@ class CustomizeCatScreen(Screens):
     def update_eye_colour_display(self):
         self.kill_element("eye_colour")
         self.kill_element("eye_colour2")
-        self.cat_elements["eye_colour"] = self.create_text_box(self.the_cat.pelt.eye_colour.lower(), (400, 400), (200, 40))
+        self.cat_elements["eye_colour"] = self.create_text_box(self.the_cat.pelt.eye_colour.lower(), (400, 350), (200, 40))
         eye_colour2_text = self.the_cat.pelt.eye_colour2 if self.the_cat.pelt.eye_colour2 else "none"
-        self.cat_elements["eye_colour2"] = self.create_text_box(eye_colour2_text.lower(), (400, 450), (200, 40))
+        self.cat_elements["eye_colour2"] = self.create_text_box(eye_colour2_text.lower(), (400, 400), (200, 40))
 
     def make_heterochromia_checkbox(self):
         self.kill_element("heterochromia_checkbox")
         checkbox_id = "@checked_checkbox" if self.heterochromia else "@unchecked_checkbox"
         self.heterochromia_checkbox = UIImageButton(
-            ui_scale(pygame.Rect((705, 450), (30, 30))),
+            ui_scale(pygame.Rect((705, 400), (30, 30))),
             "",
             object_id=checkbox_id,
             starting_height=2
@@ -252,7 +268,7 @@ class CustomizeCatScreen(Screens):
     def update_pose_display(self):
         self.kill_element("pose")
         pose_text = "none" if (self.the_cat.pelt.paralyzed or self.life_stage == "newborn") else str(self.cat_elements["current_pose"])
-        self.cat_elements["pose"] = self.create_text_box(pose_text, (400, 500), (200, 40))
+        self.cat_elements["pose"] = self.create_text_box(pose_text, (400, 450), (200, 40))
 
     def change_pelt_length(self, direction):
         previous_length = self.the_cat.pelt.length
@@ -263,7 +279,16 @@ class CustomizeCatScreen(Screens):
 
     def update_pelt_length_display(self):
         self.kill_element("pelt_length")
-        self.cat_elements["pelt_length"] = self.create_text_box(self.the_cat.pelt.length.lower(), (400, 550), (200, 40))
+        self.cat_elements["pelt_length"] = self.create_text_box(self.the_cat.pelt.length.lower(), (400, 500), (200, 40))
+
+    def change_skin(self, direction):
+        self.the_cat.pelt.skin = self.skins[(self.skins.index(self.the_cat.pelt.skin) + direction) % len(self.skins)]
+        self.update_skin_display()
+        self.make_cat_sprite()
+
+    def update_skin_display(self):
+        self.kill_element("skin")
+        self.cat_elements["skin"] = self.create_text_box(self.the_cat.pelt.skin.lower(), (400, 550), (200, 40))
 
     def change_accessory(self, direction):
         self.the_cat.pelt.accessory = None
@@ -288,8 +313,8 @@ class CustomizeCatScreen(Screens):
 
     def _kill_cat_elements(self):
         elements_to_kill = [
-            "cat_name", "cat_image", "eye_colour", "eye_colour2", "pelt_length", "pose",
-            "heterochromia_checkbox", "accessory_name"
+            "cat_name", "cat_image", "eye_colour", "eye_colour2", "heterochromia_checkbox", "pelt_length", "pose",
+            "skin", "accessory_name"
         ]
         for element in elements_to_kill:
             self.kill_element(element)
@@ -303,8 +328,8 @@ class CustomizeCatScreen(Screens):
         buttons = [
             self.eye1_left_button, self.eye1_right_button, self.eye2_left_button, self.eye2_right_button,
             self.enable_heterochromia_text, self.pelt_length_left_button, self.pelt_length_right_button,
-            self.pose_left_button, self.pose_right_button, self.accessory_left_button, self.accessory_right_button,
-            self.remove_accessory_button
+            self.pose_left_button, self.pose_right_button, self.skin_left_button, self.skin_right_button,
+            self.accessory_left_button, self.accessory_right_button, self.remove_accessory_button
         ]
         for button in buttons:
             button.kill()
