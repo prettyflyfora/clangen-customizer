@@ -34,7 +34,8 @@ class CustomizeCatScreen(Screens):
         self.accessory_left_button = None
         self.accessory_right_button = None
         self.remove_accessory_button = None
-        self.accessories = Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars
+        self.accessories = list(
+            dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
 
     def screen_switches(self):
         super().screen_switches()
@@ -80,6 +81,8 @@ class CustomizeCatScreen(Screens):
         self.setup_cat_elements()
 
     def setup_cat_elements(self):
+        for accessory in self.accessories:
+            print(accessory)
         self.cat_elements["cat_name"] = self.create_text_box(f"customize {self.the_cat.name}", (0, 0), (-1, 40))
         self.cat_elements["cat_name"].set_relative_position(ui_scale_offset((0, 100)))
         self.setup_eye_colours()
