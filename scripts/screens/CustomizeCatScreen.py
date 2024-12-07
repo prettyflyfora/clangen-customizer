@@ -81,8 +81,6 @@ class CustomizeCatScreen(Screens):
         self.setup_cat_elements()
 
     def setup_cat_elements(self):
-        for accessory in self.accessories:
-            print(accessory)
         self.cat_elements["cat_name"] = self.create_text_box(f"customize {self.the_cat.name}", (0, 0), (-1, 40))
         self.cat_elements["cat_name"].set_relative_position(ui_scale_offset((0, 100)))
         self.setup_eye_colours()
@@ -241,7 +239,8 @@ class CustomizeCatScreen(Screens):
         if (previous_length == "long" and self.the_cat.pelt.length != "long") or (
                 previous_length != "long" and self.the_cat.pelt.length == "long"):
             self.set_poses()
-            self.cat_elements["current_pose"] = self.poses[0]
+            if self.life_stage != "newborn" and not self.the_cat.pelt.paralyzed:
+                self.cat_elements["current_pose"] = self.poses[0]
             if self.life_stage == "adult":
                 self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
                 self.update_pose_display()
@@ -252,7 +251,8 @@ class CustomizeCatScreen(Screens):
 
     def update_pose_display(self):
         self.kill_element("pose")
-        self.cat_elements["pose"] = self.create_text_box(str(self.cat_elements["current_pose"]), (400, 500), (200, 40))
+        pose_text = "none" if (self.the_cat.pelt.paralyzed or self.life_stage == "newborn") else str(self.cat_elements["current_pose"])
+        self.cat_elements["pose"] = self.create_text_box(pose_text, (400, 500), (200, 40))
 
     def change_pelt_length(self, direction):
         previous_length = self.the_cat.pelt.length
