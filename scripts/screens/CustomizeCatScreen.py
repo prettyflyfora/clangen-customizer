@@ -286,7 +286,7 @@ class CustomizeCatScreen(Screens):
                 self.make_cat_sprite()
             else:
                 self.the_cat.pelt.cat_sprites['adult'] = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
-                self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 12 if previous_length == "long" else 15
+                self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 15 if previous_length == "long" else 16
 
     def update_pose_display(self):
         self.kill_element("pose")
