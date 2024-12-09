@@ -444,7 +444,7 @@ class CustomizeCatScreen(Screens):
 
     def kill_ui_elements(self):
         ui_elements = [
-            self.pelt_name_text, self.pelt_name_dropdown, self.pelt_colour_text, self.pelt_colour_dropdown,
+            self.pelt_name_label, self.pelt_name_dropdown, self.pelt_colour_label, self.pelt_colour_dropdown,
             self.white_patches_label, self.white_patches_dropdown, self.vitiligo_label, self.vitiligo_dropdown,
             self.points_label, self.points_dropdown, self.eye_colour1_label, self.eye_colour2_label,
             self.enable_heterochromia_text, self.eye_colour1_dropdown, self.eye_colour2_dropdown,
