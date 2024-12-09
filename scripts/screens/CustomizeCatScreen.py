@@ -71,6 +71,7 @@ class CustomizeCatScreen(Screens):
         self.points_dropdown = None
         self.points_markings = [marking.capitalize() for marking in Pelt.point_markings]
         self.points_markings.insert(0, "None")
+        self.pelt_length_label = None
         self.pelt_length_left_button = None
         self.pelt_length_right_button = None
         self.pelt_lengths = Pelt.pelt_length
@@ -104,20 +105,21 @@ class CustomizeCatScreen(Screens):
         self.setup_cat()
 
     def setup_labels(self):
-        self.pelt_name_text = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
-        self.pelt_colour_text = create_text_box("pelt colour", (450, 45), (150, 40), "#text_box_30_horizleft")
+        self.pelt_name_label = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
+        self.pelt_colour_label = create_text_box("pelt colour", (450, 45), (150, 40), "#text_box_30_horizleft")
+        self.pelt_length_label = create_text_box("pelt length", (625, 45), (150, 40), "#text_box_30_horizleft")
         self.white_patches_label = create_text_box("white patches", (275, 120), (150, 40), "#text_box_30_horizleft")
         self.vitiligo_label = create_text_box("vitiligo", (450, 120), (150, 40), "#text_box_30_horizleft")
-        self.points_label = create_text_box("points", (625, 120), (150, 40), "#text_box_30_horizleft")
+        self.points_label = create_text_box("point", (625, 120), (150, 40), "#text_box_30_horizleft")
         self.eye_colour1_label = create_text_box("eye colour 1", (275, 395), (150, 40), "#text_box_30_horizleft")
-        self.enable_heterochromia_text = create_text_box("enable heterochromia", (470, 432), (150, 40),
-                                                         "#text_box_22_horizcenter")
+        self.enable_heterochromia_text = create_text_box("heterochromia", (470, 428), (150, 40),
+                                                         "#text_box_30_horizcenter")
         self.eye_colour2_label = create_text_box("eye colour 2", (625, 395), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
-        self.pelt_length_left_button = create_button((450, 300), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_right_button = create_button((590, 300), (30, 30), get_arrow(1, False),
+        self.pelt_length_left_button = create_button((630, 80), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = create_button((740, 80), (30, 30), get_arrow(1, False),
                                                       ButtonStyles.ROUNDED_RECT)
         self.pose_left_button = create_button((450, 350), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pose_right_button = create_button((590, 350), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
@@ -326,8 +328,8 @@ class CustomizeCatScreen(Screens):
 
     def update_pelt_length_display(self):
         self.kill_element("pelt_length")
-        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (435, 300), (200, 40),
-                                                           "#text_box_22_horizcenter")
+        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (623, 78), (150, 40),
+                                                           "#text_box_30_horizcenter")
 
     def set_poses(self):
         age_poses = {
