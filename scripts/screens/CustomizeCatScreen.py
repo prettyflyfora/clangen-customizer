@@ -1,4 +1,6 @@
 import random
+import time
+
 import pygame
 import pygame_gui
 from scripts.cat.cats import Cat
@@ -75,12 +77,14 @@ class CustomizeCatScreen(Screens):
         self.pose_right_button = None
         self.pose_left_button = None
         self.poses = None
-        self.eye1_left_button = None
-        self.eye1_right_button = None
-        self.eye2_left_button = None
-        self.eye2_right_button = None
+        self.eye_colour1_label = None
+        self.eye_colour2_label = None
+        self.eye_colour1_dropdown = None
+        self.eye_colour2_dropdown = None
         self.enable_heterochromia_text = None
-        self.eye_colours = Pelt.eye_colours
+        self.heterochromia = False
+        self.eye_colours = [colour.capitalize() for colour in Pelt.eye_colours]
+        self.eye_colours.insert(0, "None")
         self.reverse_button = None
         self.skin_left_button = None
         self.skin_right_button = None
@@ -93,10 +97,11 @@ class CustomizeCatScreen(Screens):
 
     def screen_switches(self):
         super().screen_switches()
+        self.the_cat = Cat.fetch_cat(game.switches["cat"])
         self.setup_labels()
         self.setup_buttons()
-        self.setup_cat()
         self.setup_dropdowns()
+        self.setup_cat()
 
     def setup_labels(self):
         self.pelt_name_text = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
@@ -104,8 +109,10 @@ class CustomizeCatScreen(Screens):
         self.white_patches_label = create_text_box("white patches", (275, 120), (150, 40), "#text_box_30_horizleft")
         self.vitiligo_label = create_text_box("vitiligo", (450, 120), (150, 40), "#text_box_30_horizleft")
         self.points_label = create_text_box("points", (625, 120), (150, 40), "#text_box_30_horizleft")
-        self.enable_heterochromia_text = create_text_box("enable\nheterochromia", (670, 400), (100, 100),
+        self.eye_colour1_label = create_text_box("eye colour 1", (275, 395), (150, 40), "#text_box_30_horizleft")
+        self.enable_heterochromia_text = create_text_box("enable heterochromia", (470, 432), (150, 40),
                                                          "#text_box_22_horizcenter")
+        self.eye_colour2_label = create_text_box("eye colour 2", (625, 395), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
@@ -114,10 +121,6 @@ class CustomizeCatScreen(Screens):
                                                       ButtonStyles.ROUNDED_RECT)
         self.pose_left_button = create_button((450, 350), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pose_right_button = create_button((590, 350), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
-        self.eye1_left_button = create_button((450, 400), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.eye1_right_button = create_button((590, 400), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
-        self.eye2_left_button = create_button((450, 450), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.eye2_right_button = create_button((590, 450), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.reverse_button = create_button((670, 500), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
         self.skin_left_button = create_button((450, 550), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.skin_right_button = create_button((590, 550), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
@@ -136,9 +139,12 @@ class CustomizeCatScreen(Screens):
                                                  self.the_cat.pelt.vitiligo.capitalize() if self.the_cat.pelt.vitiligo else "None")
         self.points_dropdown = create_dropdown((625, 150), (150, 40), self.points_markings,
                                                self.the_cat.pelt.points.capitalize() if self.the_cat.pelt.points else "None")
+        self.eye_colour1_dropdown = create_dropdown((275, 425), (150, 40), self.eye_colours,
+                                                   self.the_cat.pelt.eye_colour.capitalize())
+        self.eye_colour2_dropdown = create_dropdown((625, 425), (150, 40), self.eye_colours,
+                                                   self.the_cat.pelt.eye_colour2.capitalize() if self.the_cat.pelt.eye_colour2 else self.eye_colour1_dropdown.selected_option[1].capitalize())
 
     def setup_cat(self):
-        self.the_cat = Cat.fetch_cat(game.switches["cat"])
         self.get_cat_age()
         self.make_cat_sprite()
         self.setup_cat_elements()
@@ -166,17 +172,12 @@ class CustomizeCatScreen(Screens):
         self.update_pose_display()
 
     def setup_eye_colours(self):
-        self.cat_elements["eye1_index"] = self.eye_colours.index(self.the_cat.pelt.eye_colour)
-        if self.the_cat.pelt.eye_colour2 is None:
-            self.cat_elements["eye2_index"] = "none"
+        if self.eye_colour2_dropdown.selected_option[1] == self.eye_colour1_dropdown.selected_option[1]:
             self.heterochromia = False
-            self.eye2_left_button.disable()
-            self.eye2_right_button.disable()
+            self.eye_colour2_dropdown.disable()
         else:
-            self.cat_elements["eye2_index"] = self.eye_colours.index(self.the_cat.pelt.eye_colour2)
             self.heterochromia = True
         self.make_heterochromia_checkbox()
-        self.update_eye_colour_display()
 
     def setup_reverse(self):
         self.cat_elements["reverse_value"] = self.the_cat.pelt.reverse
@@ -214,9 +215,6 @@ class CustomizeCatScreen(Screens):
                 self.handle_pelt_length_buttons(event.ui_element)
             elif event.ui_element in [self.pose_left_button, self.pose_right_button]:
                 self.handle_pose_buttons(event.ui_element)
-            elif event.ui_element in [self.eye1_left_button, self.eye1_right_button, self.eye2_left_button,
-                                      self.eye2_right_button]:
-                self.handle_eye_buttons(event.ui_element)
             elif event.ui_element == self.heterochromia_checkbox:
                 self.handle_heterochromia_checkbox()
             elif event.ui_element == self.reverse_button:
@@ -238,6 +236,8 @@ class CustomizeCatScreen(Screens):
                 self.handle_vitiligo_dropdown()
             elif event.ui_element == self.points_dropdown:
                 self.handle_points_dropdown()
+            elif event.ui_element in [self.eye_colour1_dropdown, self.eye_colour2_dropdown]:
+                self.handle_eye_colour_dropdown(event.ui_element)
 
     def handle_back_button(self):
         if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
@@ -284,10 +284,12 @@ class CustomizeCatScreen(Screens):
         direction = -1 if button == self.pose_left_button else 1
         self.change_pose(direction)
 
-    def handle_eye_buttons(self, button):
-        direction = 1 if button in [self.eye1_left_button, self.eye2_left_button] else -1
-        eye = "left" if button in [self.eye1_left_button, self.eye1_right_button] else "right"
-        self.change_eye_colour(direction, eye)
+    def handle_eye_colour_dropdown(self, dropdown):
+        if dropdown == self.eye_colour1_dropdown:
+            self.the_cat.pelt.eye_colour = self.eye_colour1_dropdown.selected_option[1].upper()
+        else:
+            self.the_cat.pelt.eye_colour2 = self.eye_colour2_dropdown.selected_option[1].upper()
+        self.make_cat_sprite()
 
     def handle_skin_buttons(self, button):
         direction = -1 if button == self.skin_left_button else 1
@@ -352,32 +354,11 @@ class CustomizeCatScreen(Screens):
             self.cat_elements["current_pose"])
         self.cat_elements["pose"] = create_text_box(pose_text, (435, 350), (200, 40), "#text_box_22_horizcenter")
 
-    def change_eye_colour(self, direction, eye):
-        if eye == "left":
-            self.the_cat.pelt.eye_colour = self.eye_colours[
-                (self.eye_colours.index(self.the_cat.pelt.eye_colour) + direction) % len(self.eye_colours)
-                ]
-        else:
-            self.the_cat.pelt.eye_colour2 = self.eye_colours[
-                (self.eye_colours.index(self.the_cat.pelt.eye_colour2) + direction) % len(self.eye_colours)
-                ]
-        self.update_eye_colour_display()
-        self.make_cat_sprite()
-
-    def update_eye_colour_display(self):
-        self.kill_element("eye_colour")
-        self.kill_element("eye_colour2")
-        self.cat_elements["eye_colour"] = create_text_box(self.the_cat.pelt.eye_colour.lower(), (435, 400), (200, 40),
-                                                          "#text_box_22_horizcenter")
-        eye_colour2_text = self.the_cat.pelt.eye_colour2 if self.the_cat.pelt.eye_colour2 else "none"
-        self.cat_elements["eye_colour2"] = create_text_box(eye_colour2_text.lower(), (435, 450), (200, 40),
-                                                           "#text_box_22_horizcenter")
-
     def make_heterochromia_checkbox(self):
         self.kill_element("heterochromia_checkbox")
         checkbox_id = "@checked_checkbox" if self.heterochromia else "@unchecked_checkbox"
         self.heterochromia_checkbox = UIImageButton(
-            ui_scale(pygame.Rect((705, 450), (30, 30))),
+            ui_scale(pygame.Rect((450, 430), (30, 30))),
             "",
             object_id=checkbox_id,
             starting_height=2
@@ -387,15 +368,19 @@ class CustomizeCatScreen(Screens):
     def handle_heterochromia_checkbox(self):
         self.heterochromia = not self.heterochromia
         if self.heterochromia:
-            self.the_cat.pelt.eye_colour2 = self.eye_colours[0]
-            self.eye2_left_button.enable()
-            self.eye2_right_button.enable()
+            self.the_cat.pelt.eye_colour2 = self.eye_colour2_dropdown.selected_option[1].upper()
+            self.eye_colour2_dropdown.enable()
         else:
             self.the_cat.pelt.eye_colour2 = None
-            self.eye2_left_button.disable()
-            self.eye2_right_button.disable()
+            self.eye_colour2_dropdown.kill()
+            self.eye_colour2_dropdown = create_dropdown(
+                (625, 425),
+                (150, 40),
+                self.eye_colours,
+                self.eye_colour1_dropdown.selected_option[1].capitalize()
+            )
+            self.eye_colour2_dropdown.disable()
         self.make_heterochromia_checkbox()
-        self.update_eye_colour_display()
         self.make_cat_sprite()
 
     def change_reverse(self):
@@ -459,10 +444,11 @@ class CustomizeCatScreen(Screens):
         ui_elements = [
             self.pelt_name_text, self.pelt_name_dropdown, self.pelt_colour_text, self.pelt_colour_dropdown,
             self.white_patches_label, self.white_patches_dropdown, self.vitiligo_label, self.vitiligo_dropdown,
-            self.pelt_length_left_button, self.pelt_length_right_button,
-            self.pose_left_button, self.pose_right_button, self.eye1_left_button, self.eye1_right_button,
-            self.eye2_left_button, self.eye2_right_button, self.enable_heterochromia_text, self.reverse_button,
-            self.skin_left_button, self.skin_right_button, self.accessory_left_button, self.accessory_right_button,
+            self.points_label, self.points_dropdown, self.eye_colour1_label, self.eye_colour2_label,
+            self.enable_heterochromia_text, self.eye_colour1_dropdown, self.eye_colour2_dropdown,
+            self.pelt_length_left_button, self.pelt_length_right_button, self.pose_left_button,
+            self.pose_right_button, self.reverse_button, self.skin_left_button, self.skin_right_button,
+            self.accessory_left_button, self.accessory_right_button,
             self.remove_accessory_button
         ]
         for ui_element in ui_elements:
