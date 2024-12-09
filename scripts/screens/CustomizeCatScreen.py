@@ -65,6 +65,10 @@ class CustomizeCatScreen(Screens):
         self.vitiligo_dropdown = None
         self.vitiligo_patterns = [pattern.capitalize() for pattern in Pelt.vit]
         self.vitiligo_patterns.insert(0, "None")
+        self.points_label = None
+        self.points_dropdown = None
+        self.points_markings = [marking.capitalize() for marking in Pelt.point_markings]
+        self.points_markings.insert(0, "None")
         self.pelt_length_left_button = None
         self.pelt_length_right_button = None
         self.pelt_lengths = Pelt.pelt_length
@@ -99,6 +103,7 @@ class CustomizeCatScreen(Screens):
         self.pelt_colour_text = create_text_box("pelt colour", (450, 45), (150, 40), "#text_box_30_horizleft")
         self.white_patches_label = create_text_box("white patches", (275, 120), (150, 40), "#text_box_30_horizleft")
         self.vitiligo_label = create_text_box("vitiligo", (450, 120), (150, 40), "#text_box_30_horizleft")
+        self.points_label = create_text_box("points", (625, 120), (150, 40), "#text_box_30_horizleft")
         self.enable_heterochromia_text = create_text_box("enable\nheterochromia", (670, 400), (100, 100),
                                                          "#text_box_22_horizcenter")
 
@@ -129,6 +134,8 @@ class CustomizeCatScreen(Screens):
                                                       self.the_cat.pelt.white_patches.capitalize() if self.the_cat.pelt.white_patches else "None")
         self.vitiligo_dropdown = create_dropdown((450, 150), (150, 40), self.vitiligo_patterns,
                                                  self.the_cat.pelt.vitiligo.capitalize() if self.the_cat.pelt.vitiligo else "None")
+        self.points_dropdown = create_dropdown((625, 150), (150, 40), self.points_markings,
+                                               self.the_cat.pelt.points.capitalize() if self.the_cat.pelt.points else "None")
 
     def setup_cat(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
@@ -229,6 +236,8 @@ class CustomizeCatScreen(Screens):
                 self.handle_white_patches_dropdown()
             elif event.ui_element == self.vitiligo_dropdown:
                 self.handle_vitiligo_dropdown()
+            elif event.ui_element == self.points_dropdown:
+                self.handle_points_dropdown()
 
     def handle_back_button(self):
         if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
@@ -257,6 +266,14 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.vitiligo = None
         else:
             self.the_cat.pelt.vitiligo = selected_option[1].upper()
+        self.make_cat_sprite()
+
+    def handle_points_dropdown(self):
+        selected_option = self.points_dropdown.selected_option
+        if selected_option[1] == "None":
+            self.the_cat.pelt.points = None
+        else:
+            self.the_cat.pelt.points = selected_option[1].upper()
         self.make_cat_sprite()
 
     def handle_pelt_length_buttons(self, button):
