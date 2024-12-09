@@ -47,8 +47,10 @@ class CustomizeCatScreen(Screens):
         self.life_stage = None
         self.cat_image = None
         self.back_button = None
+        self.pelt_name_text = None
         self.pelt_name_dropdown = None
         self.pelt_names = list(Pelt.sprites_names.keys())
+        self.pelt_colour_text = None
         self.pelt_colour_dropdown = None
         self.pelt_colours = [color.capitalize() for color in Pelt.pelt_colours]
         self.pelt_length_left_button = None
@@ -75,9 +77,15 @@ class CustomizeCatScreen(Screens):
 
     def screen_switches(self):
         super().screen_switches()
+        self.setup_labels()
         self.setup_buttons()
         self.setup_cat()
         self.setup_dropdowns()
+
+    def setup_labels(self):
+        self.pelt_name_text = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
+        self.pelt_colour_text = create_text_box("pelt colour", (450, 45), (150, 40), "#text_box_30_horizleft")
+        self.enable_heterochromia_text = create_text_box("enable\nheterochromia", (670, 400), (100, 100), "#text_box_22_horizcenter")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
@@ -89,7 +97,6 @@ class CustomizeCatScreen(Screens):
         self.eye1_right_button = create_button((590, 400), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.eye2_left_button = create_button((450, 450), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.eye2_right_button = create_button((590, 450), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
-        self.enable_heterochromia_text = create_text_box("enable\nheterochromia", (670, 400), (100, 100), "#text_box_22_horizcenter")
         self.reverse_button = create_button((670, 500), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
         self.skin_left_button = create_button((450, 550), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.skin_right_button = create_button((590, 550), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
@@ -98,8 +105,8 @@ class CustomizeCatScreen(Screens):
         self.remove_accessory_button = create_button((670, 600), (70, 30), "Remove", ButtonStyles.ROUNDED_RECT)
 
     def setup_dropdowns(self):
-        self.pelt_name_dropdown = create_dropdown((435, 200), (200, 40), self.pelt_names, self.the_cat.pelt.name)
-        self.pelt_colour_dropdown = create_dropdown((435, 250), (200, 40), self.pelt_colours, self.the_cat.pelt.colour.capitalize())
+        self.pelt_name_dropdown = create_dropdown((275, 75), (150, 40), self.pelt_names, self.the_cat.pelt.name)
+        self.pelt_colour_dropdown = create_dropdown((450, 75), (150, 40), self.pelt_colours, self.the_cat.pelt.colour.capitalize())
 
     def setup_cat(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
@@ -378,7 +385,7 @@ class CustomizeCatScreen(Screens):
 
     def kill_ui_elements(self):
         ui_elements = [
-            self.pelt_name_dropdown, self.pelt_colour_dropdown,
+            self.pelt_name_text, self.pelt_name_dropdown, self.pelt_colour_text, self.pelt_colour_dropdown,
             self.pelt_length_left_button, self.pelt_length_right_button,
             self.pose_left_button, self.pose_right_button, self.eye1_left_button, self.eye1_right_button,
             self.eye2_left_button, self.eye2_right_button, self.enable_heterochromia_text, self.reverse_button,
