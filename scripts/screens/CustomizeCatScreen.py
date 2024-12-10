@@ -174,7 +174,7 @@ class CustomizeCatScreen(Screens):
         self.update_pelt_length_display()
 
     def setup_white_patches_tint(self):
-        if self.the_cat.pelt.white_patches == "None" and self.the_cat.pelt.points is None:
+        if self.the_cat.pelt.white_patches is None and self.the_cat.pelt.points is None:
             self.white_patches_tint_dropdown.disable()
 
     def setup_eye_colours(self):
