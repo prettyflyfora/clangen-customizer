@@ -78,7 +78,8 @@ class CustomizeCatScreen(Screens):
         self.pelt_lengths = Pelt.pelt_length
         self.white_patches_tint_label = None
         self.white_patches_tint_dropdown = None
-        self.white_patches_tints = [tint.capitalize() for tint in sprites.white_patches_tints["tint_colours"]]
+        self.white_patches_tints = ["None"] + [tint.capitalize() for tint in sprites.white_patches_tints["tint_colours"]
+                                               if tint.lower() != "none"]
         self.skin_label = None
         self.skin_dropdown = None
         self.skins = [skin.capitalize() for skin in Pelt.skin_sprites]
@@ -92,13 +93,20 @@ class CustomizeCatScreen(Screens):
         self.enable_heterochromia_text = None
         self.heterochromia = False
         self.eye_colours = [colour.capitalize() for colour in Pelt.eye_colours]
-        self.eye_colours.insert(0, "None")
         self.reverse_button = None
         self.accessory_left_button = None
         self.accessory_right_button = None
         self.remove_accessory_button = None
         self.accessories = list(
             dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
+
+    # for testing purposes
+    def print_pelt_attributes(self):
+        print("\n*** PELT START ***")
+        pelt_attributes = vars(self.the_cat.pelt)
+        for attribute, value in pelt_attributes.items():
+            print(f"{attribute}: {value}")
+        print("*** PELT END ***")
 
     def screen_switches(self):
         super().screen_switches()
@@ -233,6 +241,7 @@ class CustomizeCatScreen(Screens):
                 self.handle_accessory_buttons(event.ui_element)
             elif event.ui_element == self.remove_accessory_button:
                 self.remove_accessory()
+            self.print_pelt_attributes() # for testing purposes
         elif event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
             if event.ui_element == self.pelt_name_dropdown:
                 self.handle_pelt_name_dropdown()
@@ -250,6 +259,7 @@ class CustomizeCatScreen(Screens):
                 self.handle_skin_dropdown()
             elif event.ui_element in [self.eye_colour1_dropdown, self.eye_colour2_dropdown]:
                 self.handle_eye_colour_dropdown(event.ui_element)
+            self.print_pelt_attributes() # for testing purposes
 
     def handle_back_button(self):
         if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
@@ -318,21 +328,35 @@ class CustomizeCatScreen(Screens):
         self.change_accessory(direction)
 
     def handle_sprites_for_pelt_length(self, previous_length):
-        if (previous_length == "long" and self.the_cat.pelt.length != "long") or (
-                previous_length != "long" and self.the_cat.pelt.length == "long"):
+        is_long_to_not_long = previous_length == "long" and self.the_cat.pelt.length != "long"
+        is_not_long_to_long = previous_length != "long" and self.the_cat.pelt.length == "long"
+
+        if is_long_to_not_long or is_not_long_to_long:
             self.set_poses()
             if self.life_stage != "newborn" and not self.the_cat.pelt.paralyzed:
                 self.cat_elements["current_pose"] = self.poses[0]
+
             if self.life_stage == "adult":
-                self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
-                self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
-                self.update_pose_display()
-                self.make_cat_sprite()
+                if not self.the_cat.pelt.paralyzed:
+                    self.the_cat.pelt.cat_sprites['young adult'] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites['adult'] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites['senior adult'] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
+                else:
+                    random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
+                    self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
             else:
-                self.the_cat.pelt.cat_sprites['adult'] = random.randint(6,
-                                                                        8) if previous_length == "long" else random.randint(
-                    9, 11)
-                self.the_cat.pelt.cat_sprites['sprite_para_adult'] = 15 if previous_length == "long" else 16
+                random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
+                self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
+
+            self.update_pose_display()
+            self.make_cat_sprite()
 
     def change_pelt_length(self, direction):
         previous_length = self.the_cat.pelt.length
@@ -405,7 +429,8 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["current_pose"] = self.poses[new_index]
         self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
         if self.life_stage == "adult":
-            self.the_cat.pelt.cat_sprites[self.the_cat.age] = self.cat_elements["current_pose"]
+            self.the_cat.pelt.cat_sprites['young adult'] = self.cat_elements["current_pose"]
+            self.the_cat.pelt.cat_sprites['senior adult'] = self.cat_elements["current_pose"]
         self.update_pose_display()
         self.make_cat_sprite()
 
