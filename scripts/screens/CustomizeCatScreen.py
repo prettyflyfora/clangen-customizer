@@ -126,26 +126,26 @@ class CustomizeCatScreen(Screens):
         self.pelt_name_label = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
         self.pelt_colour_label = create_text_box("pelt colour", (450, 45), (150, 40), "#text_box_30_horizleft")
         self.pelt_length_label = create_text_box("pelt length", (625, 45), (150, 40), "#text_box_30_horizleft")
-        self.white_patches_label = create_text_box("white patches", (275, 120), (150, 40), "#text_box_30_horizleft")
-        self.vitiligo_label = create_text_box("vitiligo", (450, 120), (150, 40), "#text_box_30_horizleft")
-        self.points_label = create_text_box("point", (625, 120), (150, 40), "#text_box_30_horizleft")
-        self.white_patches_tint_label = create_text_box("white patches tint", (275, 195), (150, 40),
+        self.white_patches_label = create_text_box("white patches", (275, 195), (150, 40), "#text_box_30_horizleft")
+        self.vitiligo_label = create_text_box("vitiligo", (450, 195), (150, 40), "#text_box_30_horizleft")
+        self.points_label = create_text_box("point", (625, 195), (150, 40), "#text_box_30_horizleft")
+        self.white_patches_tint_label = create_text_box("white patches tint", (275, 270), (150, 40),
                                                         "#text_box_30_horizleft")
-        self.tint_label = create_text_box("tint", (450, 195), (150, 40), "#text_box_30_horizleft")
-        self.skin_label = create_text_box("skin", (625, 195), (150, 40), "#text_box_30_horizleft")
-        self.eye_colour1_label = create_text_box("eye colour 1", (275, 395), (150, 40), "#text_box_30_horizleft")
-        self.enable_heterochromia_text = create_text_box("heterochromia", (470, 428), (150, 40),
+        self.tint_label = create_text_box("tint", (450, 270), (150, 40), "#text_box_30_horizleft")
+        self.skin_label = create_text_box("skin", (625, 270), (150, 40), "#text_box_30_horizleft")
+        self.eye_colour1_label = create_text_box("eye colour 1", (275, 345), (150, 40), "#text_box_30_horizleft")
+        self.enable_heterochromia_text = create_text_box("heterochromia", (465, 378), (150, 40),
                                                          "#text_box_30_horizcenter")
-        self.eye_colour2_label = create_text_box("eye colour 2", (625, 395), (150, 40), "#text_box_30_horizleft")
+        self.eye_colour2_label = create_text_box("eye colour 2", (625, 345), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
-        self.pelt_length_left_button = create_button((630, 80), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_right_button = create_button((740, 80), (30, 30), get_arrow(1, False),
+        self.pelt_length_left_button = create_button((625, 80), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = create_button((745, 80), (30, 30), get_arrow(1, False),
                                                       ButtonStyles.ROUNDED_RECT)
-        self.pose_left_button = create_button((450, 350), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pose_right_button = create_button((590, 350), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.reverse_button = create_button((670, 500), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = create_button((450, 550), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = create_button((590, 550), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.accessory_left_button = create_button((450, 600), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.accessory_right_button = create_button((590, 600), (30, 30), get_arrow(1, False),
                                                     ButtonStyles.ROUNDED_RECT)
@@ -155,20 +155,20 @@ class CustomizeCatScreen(Screens):
         self.pelt_name_dropdown = create_dropdown((275, 75), (150, 40), self.pelt_names, self.the_cat.pelt.name)
         self.pelt_colour_dropdown = create_dropdown((450, 75), (150, 40), self.pelt_colours,
                                                     self.the_cat.pelt.colour.capitalize())
-        self.white_patches_dropdown = create_dropdown((275, 150), (150, 40), self.white_patches,
+        self.white_patches_dropdown = create_dropdown((275, 225), (150, 40), self.white_patches,
                                                       self.the_cat.pelt.white_patches.capitalize() if self.the_cat.pelt.white_patches else "None")
-        self.vitiligo_dropdown = create_dropdown((450, 150), (150, 40), self.vitiligo_patterns,
+        self.vitiligo_dropdown = create_dropdown((450, 225), (150, 40), self.vitiligo_patterns,
                                                  self.the_cat.pelt.vitiligo.capitalize() if self.the_cat.pelt.vitiligo else "None")
-        self.points_dropdown = create_dropdown((625, 150), (150, 40), self.points_markings,
+        self.points_dropdown = create_dropdown((625, 225), (150, 40), self.points_markings,
                                                self.the_cat.pelt.points.capitalize() if self.the_cat.pelt.points else "None")
-        self.white_patches_tint_dropdown = create_dropdown((275, 225), (150, 40), self.white_patches_tints,
+        self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40), self.white_patches_tints,
                                                            self.the_cat.pelt.white_patches_tint.capitalize())
-        self.tint_dropdown = create_dropdown((450, 225), (150, 40), self.tints,
+        self.tint_dropdown = create_dropdown((450, 300), (150, 40), self.tints,
                                              self.the_cat.pelt.tint.capitalize() if self.the_cat.pelt.tint else "None")
-        self.skin_dropdown = create_dropdown((625, 225), (150, 40), self.skins, self.the_cat.pelt.skin.capitalize())
-        self.eye_colour1_dropdown = create_dropdown((275, 425), (150, 40), self.eye_colours,
+        self.skin_dropdown = create_dropdown((625, 300), (150, 40), self.skins, self.the_cat.pelt.skin.capitalize())
+        self.eye_colour1_dropdown = create_dropdown((275, 375), (150, 40), self.eye_colours,
                                                     self.the_cat.pelt.eye_colour.capitalize())
-        self.eye_colour2_dropdown = create_dropdown((625, 425), (150, 40), self.eye_colours,
+        self.eye_colour2_dropdown = create_dropdown((625, 375), (150, 40), self.eye_colours,
                                                     self.the_cat.pelt.eye_colour2.capitalize() if self.the_cat.pelt.eye_colour2 else
                                                     self.eye_colour1_dropdown.selected_option[1].capitalize())
 
@@ -178,7 +178,7 @@ class CustomizeCatScreen(Screens):
         self.setup_cat_elements()
 
     def setup_cat_elements(self):
-        self.cat_elements["cat_name"] = create_text_box(f"customize {self.the_cat.name}", (30, 150), (250, 40),
+        self.cat_elements["cat_name"] = create_text_box(f"customize {self.the_cat.name}", (30, 200), (250, 40),
                                                         "#text_box_34_horizcenter")
         self.setup_pelt_length()
         self.setup_white_patches_tint()
@@ -230,7 +230,7 @@ class CustomizeCatScreen(Screens):
             self.cat_elements["cat_image"].kill()
         self.cat_image = generate_sprite(self.the_cat, self.life_stage, False, False, True, True)
         self.cat_elements["cat_image"] = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((30, 200), (250, 250))),
+            ui_scale(pygame.Rect((25, 250), (250, 250))),
             pygame.transform.scale(self.cat_image, ui_scale_dimensions((250, 250))),
             manager=MANAGER
         )
@@ -384,7 +384,7 @@ class CustomizeCatScreen(Screens):
 
     def update_pelt_length_display(self):
         self.kill_element("pelt_length")
-        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (623, 78), (150, 40),
+        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (655, 78), (90, 40),
                                                            "#text_box_30_horizcenter")
 
     def check_white_patches_tint(self):
@@ -392,7 +392,7 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.white_patches_tint = "none"
             self.white_patches_tint_dropdown.kill()
             self.white_patches_tint_dropdown = create_dropdown(
-                (275, 225),
+                (275, 300),
                 (150, 40),
                 self.white_patches_tints,
                 "None"
@@ -405,7 +405,7 @@ class CustomizeCatScreen(Screens):
         self.kill_element("heterochromia_checkbox")
         checkbox_id = "@checked_checkbox" if self.heterochromia else "@unchecked_checkbox"
         self.heterochromia_checkbox = UIImageButton(
-            ui_scale(pygame.Rect((450, 430), (30, 30))),
+            ui_scale(pygame.Rect((450, 380), (30, 30))),
             "",
             object_id=checkbox_id,
             starting_height=2
@@ -454,7 +454,7 @@ class CustomizeCatScreen(Screens):
         self.kill_element("pose")
         pose_text = "none" if (self.the_cat.pelt.paralyzed or self.life_stage == "newborn") else str(
             self.cat_elements["current_pose"])
-        self.cat_elements["pose"] = create_text_box(pose_text, (435, 350), (200, 40), "#text_box_22_horizcenter")
+        self.cat_elements["pose"] = create_text_box(pose_text, (435, 550), (200, 40), "#text_box_22_horizcenter")
 
     def change_reverse(self):
         self.the_cat.pelt.reverse = not self.the_cat.pelt.reverse
