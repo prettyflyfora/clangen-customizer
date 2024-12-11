@@ -357,19 +357,16 @@ class CustomizeCatScreen(Screens):
                     self.the_cat.pelt.cat_sprites['young adult'] = self.cat_elements["current_pose"]
                     self.the_cat.pelt.cat_sprites['adult'] = self.cat_elements["current_pose"]
                     self.the_cat.pelt.cat_sprites['senior adult'] = self.cat_elements["current_pose"]
-                    self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
                 else:
                     random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
                     self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
                     self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
                     self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
-                    self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
             else:
                 random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
                 self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
                 self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
                 self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
-                self.the_cat.pelt.cat_sprites['para_adult'] = 15 if previous_length == "long" else 16
 
             self.update_pose_display()
             self.make_cat_sprite()
