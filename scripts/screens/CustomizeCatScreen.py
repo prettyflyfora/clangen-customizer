@@ -73,7 +73,6 @@ class CustomizeCatScreen(Screens):
         self.tortie_colours = self.pelt_colours
         self.tortie_pattern_label = None
         self.tortie_pattern_dropdown = None
-        self.tortie_patterns = self.tortie_bases
         self.white_patches_label = None
         self.white_patches_dropdown = None
         self.white_patches = [patch.capitalize() for patch in
@@ -177,7 +176,7 @@ class CustomizeCatScreen(Screens):
                                                     self.the_cat.pelt.tortiebase.capitalize() if self.the_cat.pelt.tortiebase else "None")
         self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), self.tortie_colours,
                                                       self.the_cat.pelt.tortiecolour.capitalize() if self.the_cat.pelt.tortiecolour else "None")
-        self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_patterns,
+        self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_bases,
                                                        self.the_cat.pelt.tortiepattern.capitalize() if self.the_cat.pelt.tortiepattern else "None")
         self.white_patches_dropdown = create_dropdown((275, 225), (150, 40), self.white_patches,
                                                       self.the_cat.pelt.white_patches.capitalize() if self.the_cat.pelt.white_patches else "None")
@@ -451,23 +450,33 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.pattern = self.patterns[0].upper()
             self.the_cat.pelt.tortiebase = self.tortie_bases[0].lower()
             self.the_cat.pelt.tortiecolour = self.tortie_colours[0].upper()
-            self.the_cat.pelt.tortiepattern = self.tortie_patterns[0].lower()
+            self.the_cat.pelt.tortiepattern = self.tortie_bases[0].lower()
 
             self.pattern_dropdown = create_dropdown((100, 150), (150, 40), self.patterns, self.the_cat.pelt.pattern.capitalize())
             self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), self.tortie_bases, self.the_cat.pelt.tortiebase.capitalize())
             self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), self.tortie_colours, self.the_cat.pelt.tortiecolour.capitalize())
-            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_patterns, self.the_cat.pelt.tortiepattern.capitalize())
+            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_bases, self.the_cat.pelt.tortiepattern.capitalize())
 
         else:
-            self.pattern_dropdown.disable()
-            self.tortie_base_dropdown.disable()
-            self.tortie_colour_dropdown.disable()
-            self.tortie_pattern_dropdown.disable()
+            self.pattern_dropdown.kill()
+            self.tortie_base_dropdown.kill()
+            self.tortie_colour_dropdown.kill()
+            self.tortie_pattern_dropdown.kill()
 
             self.the_cat.pelt.pattern = None
             self.the_cat.pelt.tortiebase = None
             self.the_cat.pelt.tortiecolour = None
             self.the_cat.pelt.tortiepattern = None
+
+            self.pattern_dropdown = create_dropdown((100, 150), (150, 40), self.patterns, "None")
+            self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), self.tortie_bases, "None")
+            self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), self.tortie_colours, "None")
+            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_bases, "None")
+
+            self.pattern_dropdown.disable()
+            self.tortie_base_dropdown.disable()
+            self.tortie_colour_dropdown.disable()
+            self.tortie_pattern_dropdown.disable()
 
     def check_white_patches_tint(self):
         if self.the_cat.pelt.points is None and self.the_cat.pelt.white_patches is None:
