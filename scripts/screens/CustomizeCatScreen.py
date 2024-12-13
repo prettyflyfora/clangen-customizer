@@ -3,6 +3,8 @@ import time
 
 import pygame
 import pygame_gui
+from pygame_gui.elements import UIDropDownMenu, UITextBox
+
 from scripts.cat.cats import Cat
 from scripts.cat.pelts import Pelt
 from scripts.cat.sprites import sprites
@@ -16,7 +18,7 @@ from scripts.utility import ui_scale, generate_sprite, ui_scale_dimensions, get_
 
 
 def create_text_box(text, pos, size, theme):
-    return pygame_gui.elements.UITextBox(
+    return UITextBox(
         text,
         ui_scale(pygame.Rect(pos, size)),
         manager=MANAGER,
@@ -35,12 +37,11 @@ def create_button(pos, size, text, style):
 
 
 def create_dropdown(pos, size, options, selected_option="1"):
-    return pygame_gui.elements.UIDropDownMenu(
+    return UIDropDownMenu(
         options,
         selected_option,
         ui_scale(pygame.Rect(pos, size)),
-        manager=MANAGER,
-        object_id="@dropdown"
+        manager=MANAGER
     )
 
 
