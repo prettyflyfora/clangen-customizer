@@ -195,6 +195,46 @@
         "misc": {"text_vert_alignment": "top", "text_vert_alignment_padding": "12"}
     },
     "@buttonstyles_ladder_multiline": {"prototype": "buttonstyles_prototype", "misc": {"padding": "7, 9"}},
+    "drop_down_menu": {
+        "colours": {
+            "normal_bg": "#655934",
+            "hovered_bg": "#453c20",
+            "disabled_bg": "#5C5850",
+            "selected_bg": "#655934",
+            "active_bg": "#655934",
+            "normal_border": "#776045",
+            "hovered_border": "#291B0F",
+            "disabled_border": "#706B64",
+            "selected_border": "#776045",
+            "active_border": "#776045"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "3",
+            "border_width": "1",
+            "shadow_width": "0"
+        }
+    },
+    "drop_down_menu.button": {
+        "colours": {
+            "hovered_bg": "#453c20",
+            "normal_text": "#EFE5CE",
+            "hovered_text": "#EFE5CE"
+        }
+    },
+    "drop_down_menu.#drop_down_options_list.button": {
+        "colours": {
+            "hovered_bg": "#453c20",
+            "normal_text": "#EFE5CE",
+            "hovered_text": "#EFE5CE",
+            "selected_text": "#453c20"
+        }
+    },
+    "#dropup": {
+        "misc": {
+            "expand_direction": "up"
+        }
+    },
     "#window_base_theme": {
         "misc": {
             "shape": "rounded_rectangle",
