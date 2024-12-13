@@ -426,17 +426,18 @@ class CustomizeCatScreen(Screens):
             for dropdown in dropdowns:
                 dropdown.kill()
 
-            self.the_cat.pelt.pattern = None
-            self.the_cat.pelt.tortiebase = None
-            self.the_cat.pelt.tortiecolour = None
-            self.the_cat.pelt.tortiepattern = None
-
             self.pattern_dropdown = create_dropdown((100, 150), (150, 40), self.patterns, "None")
             self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), self.tortie_bases, "None")
             self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), self.tortie_colours, "None")
             self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_bases, "None")
 
-            for dropdown in dropdowns:
+            self.the_cat.pelt.pattern = None
+            self.the_cat.pelt.tortiebase = None
+            self.the_cat.pelt.tortiecolour = None
+            self.the_cat.pelt.tortiepattern = None
+
+            for dropdown in [self.pattern_dropdown, self.tortie_base_dropdown, self.tortie_colour_dropdown,
+                             self.tortie_pattern_dropdown]:
                 dropdown.disable()
 
     def check_white_patches_tint(self):
