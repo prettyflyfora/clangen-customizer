@@ -211,8 +211,7 @@
         "misc": {
             "shape": "rounded_rectangle",
             "shape_corner_radius": "3",
-            "border_width": "1",
-            "shadow_width": "0"
+            "border_width": "2"
         }
     },
     "drop_down_menu.button": {
@@ -220,6 +219,12 @@
             "hovered_bg": "#453c20",
             "normal_text": "#EFE5CE",
             "hovered_text": "#EFE5CE"
+        }
+    },
+    "drop_down_menu.#drop_down_options_list": {
+        "misc": {
+            "shadow_width": "3",
+            "list_item_height": "20"
         }
     },
     "drop_down_menu.#drop_down_options_list.button": {
