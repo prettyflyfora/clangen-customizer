@@ -1,5 +1,4 @@
 import random
-import time
 
 import pygame
 import pygame_gui
@@ -116,6 +115,16 @@ class CustomizeCatScreen(Screens):
         self.accessory_dropdown = None
         self.accessories = ["None"] + list(dict.fromkeys([acc.capitalize() for acc in (
                     Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars)]))
+        self.scar1_label = None
+        self.scar2_label = None
+        self.scar3_label = None
+        self.scar4_label = None
+        self.scar1_dropdown = None
+        self.scar2_dropdown = None
+        self.scar3_dropdown = None
+        self.scar4_dropdown = None
+        self.scars = ["None"] + [scar.capitalize() for scar in (Pelt.scars1 + Pelt.scars2 + Pelt.scars3)]
+        self.previous_scar_selection = {}
 
     # for testing purposes
     def print_pelt_attributes(self):
@@ -153,6 +162,10 @@ class CustomizeCatScreen(Screens):
                                                          "#text_box_30_horizcenter")
         self.eye_colour2_label = create_text_box("eye colour 2", (625, 345), (150, 40), "#text_box_30_horizleft")
         self.accessory_label = create_text_box("accessory", (275, 420), (150, 40), "#text_box_30_horizleft")
+        self.scar1_label = create_text_box("scar 1", (100, 495), (150, 40), "#text_box_30_horizleft")
+        self.scar2_label = create_text_box("scar 2", (275, 495), (150, 40), "#text_box_30_horizleft")
+        self.scar3_label = create_text_box("scar 3", (450, 495), (150, 40), "#text_box_30_horizleft")
+        self.scar4_label = create_text_box("scar 4", (675, 495), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
@@ -193,6 +206,15 @@ class CustomizeCatScreen(Screens):
                                                     self.eye_colour1_dropdown.selected_option[1].capitalize())
         self.accessory_dropdown = create_dropdown((275, 450), (150, 40), self.accessories,
                                                   self.the_cat.pelt.accessory.capitalize() if self.the_cat.pelt.accessory else "None")
+        scars = self.the_cat.pelt.scars
+        self.scar1_dropdown = create_dropdown((100, 525), (150, 40), self.scars,
+                                              scars[0].capitalize() if len(scars) > 0 else "None")
+        self.scar2_dropdown = create_dropdown((275, 525), (150, 40), self.scars,
+                                              scars[1].capitalize() if len(scars) > 1 else "None")
+        self.scar3_dropdown = create_dropdown((450, 525), (150, 40), self.scars,
+                                              scars[2].capitalize() if len(scars) > 2 else "None")
+        self.scar4_dropdown = create_dropdown((625, 525), (150, 40), self.scars,
+                                              scars[3].capitalize() if len(scars) > 3 else "None")
 
     def setup_cat(self):
         self.get_cat_age()
@@ -299,6 +321,8 @@ class CustomizeCatScreen(Screens):
                 self.handle_eye_colour_dropdown(event.ui_element)
             elif event.ui_element == self.accessory_dropdown:
                 self.handle_accessory_dropdown()
+            elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown]:
+                self.handle_scar_dropdown(event.ui_element)
             self.print_pelt_attributes()  # for testing purposes
 
     def handle_dropdown_change(self, dropdown, attribute, upper=False, lower=False):
@@ -359,6 +383,20 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.accessory = None
         else:
             self.the_cat.pelt.accessory = selected_option[1].upper()
+        self.make_cat_sprite()
+
+    def handle_scar_dropdown(self, dropdown):
+        selected_option = dropdown.selected_option[1].upper()
+
+        previous_selection = self.previous_scar_selection.get(dropdown, "NONE")
+        if previous_selection != "NONE" and previous_selection in self.the_cat.pelt.scars:
+            self.the_cat.pelt.scars.remove(previous_selection)
+
+        if selected_option != "NONE":
+            self.the_cat.pelt.scars.append(selected_option)
+
+        self.previous_scar_selection[dropdown] = selected_option
+
         self.make_cat_sprite()
 
     def handle_sprites_for_pelt_length(self, previous_length):
@@ -542,17 +580,26 @@ class CustomizeCatScreen(Screens):
 
     def kill_ui_elements(self):
         ui_elements = [
-            self.pelt_name_label, self.pelt_name_dropdown, self.pelt_colour_label, self.pelt_colour_dropdown,
+            self.pelt_name_label, self.pelt_name_dropdown,
+            self.pelt_colour_label, self.pelt_colour_dropdown,
             self.pelt_length_label, self.pelt_length_left_button, self.pelt_length_right_button,
-            self.pattern_label, self.pattern_dropdown, self.tortie_base_label, self.tortie_base_dropdown,
-            self.tortie_colour_label, self.tortie_colour_dropdown, self.tortie_pattern_label,
-            self.tortie_pattern_dropdown,
-            self.white_patches_label, self.white_patches_dropdown, self.vitiligo_label, self.vitiligo_dropdown,
-            self.points_label, self.points_dropdown, self.skin_label, self.skin_dropdown, self.white_patches_tint_label,
-            self.white_patches_tint_dropdown, self.tint_label, self.tint_dropdown, self.eye_colour1_label,
-            self.eye_colour2_label, self.enable_heterochromia_text, self.eye_colour1_dropdown,
-            self.eye_colour2_dropdown, self.pose_left_button, self.pose_right_button, self.reverse_button,
-            self.accessory_label, self.accessory_dropdown
+            self.pattern_label, self.pattern_dropdown,
+            self.tortie_base_label, self.tortie_base_dropdown,
+            self.tortie_colour_label, self.tortie_colour_dropdown,
+            self.tortie_pattern_label, self.tortie_pattern_dropdown,
+            self.white_patches_label, self.white_patches_dropdown,
+            self.vitiligo_label, self.vitiligo_dropdown,
+            self.points_label, self.points_dropdown,
+            self.skin_label, self.skin_dropdown,
+            self.white_patches_tint_label, self.white_patches_tint_dropdown,
+            self.tint_label, self.tint_dropdown,
+            self.eye_colour1_label, self.eye_colour2_label, self.enable_heterochromia_text, self.eye_colour1_dropdown,
+            self.eye_colour2_dropdown,
+            self.pose_left_button, self.pose_right_button,
+            self.reverse_button,
+            self.accessory_label, self.accessory_dropdown,
+            self.scar1_label, self.scar2_label, self.scar3_label, self.scar4_label,
+            self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown,
         ]
         for ui_element in ui_elements:
             ui_element.kill()
