@@ -298,7 +298,7 @@ class CustomizeCatScreen(Screens):
             elif event.ui_element in [self.eye_colour1_dropdown, self.eye_colour2_dropdown]:
                 self.handle_eye_colour_dropdown(event.ui_element)
             elif event.ui_element == self.accessory_dropdown:
-                self.handle_dropdown_change(self.accessory_dropdown, 'accessory', upper=True)
+                self.handle_accessory_dropdown()
             self.print_pelt_attributes()  # for testing purposes
 
     def handle_dropdown_change(self, dropdown, attribute, upper=False, lower=False):
@@ -353,9 +353,13 @@ class CustomizeCatScreen(Screens):
         direction = -1 if button == self.pose_left_button else 1
         self.change_pose(direction)
 
-    def handle_accessory_buttons(self, button):
-        direction = -1 if button == self.accessory_left_button else 1
-        self.change_accessory(direction)
+    def handle_accessory_dropdown(self):
+        selected_option = self.accessory_dropdown.selected_option
+        if selected_option[1] == "None":
+            self.the_cat.pelt.accessory = None
+        else:
+            self.the_cat.pelt.accessory = selected_option[1].upper()
+        self.make_cat_sprite()
 
     def handle_sprites_for_pelt_length(self, previous_length):
         is_long_to_not_long = previous_length == "long" and self.the_cat.pelt.length != "long"
