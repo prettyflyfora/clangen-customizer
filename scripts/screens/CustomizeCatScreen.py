@@ -314,7 +314,7 @@ class CustomizeCatScreen(Screens):
             elif event.ui_element == self.white_patches_dropdown:
                 self.handle_white_patches_dropdown()
             elif event.ui_element == self.vitiligo_dropdown:
-                self.handle_dropdown_change(self.vitiligo_dropdown, 'vitiligo', upper=True)
+                self.handle_vitiligo_dropdown()
             elif event.ui_element == self.points_dropdown:
                 self.handle_points_dropdown()
             elif event.ui_element == self.white_patches_tint_dropdown:
@@ -365,6 +365,14 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.white_patches = selected_option[1].upper()
         self.make_cat_sprite()
         self.check_white_patches_tint()
+
+    def handle_vitiligo_dropdown(self):
+        selected_option = self.vitiligo_dropdown.selected_option
+        if selected_option[1] == "None":
+            self.the_cat.pelt.vitiligo = None
+        else:
+            self.the_cat.pelt.vitiligo = selected_option[1].upper()
+        self.make_cat_sprite()
 
     def handle_points_dropdown(self):
         selected_option = self.points_dropdown.selected_option
