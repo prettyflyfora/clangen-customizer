@@ -53,6 +53,8 @@ class CustomizeCatScreen(Screens):
         self.life_stage = None
         self.cat_image = None
         self.back_button = None
+        self.reset_button = None
+        self.initial_state = None
         self.pelt_name_label = None
         self.pelt_name_dropdown = None
         self.pelt_names = list(Pelt.sprites_names.keys())
@@ -145,6 +147,7 @@ class CustomizeCatScreen(Screens):
         self.setup_buttons()
         self.setup_dropdowns()
         self.setup_cat()
+        self.capture_initial_state()
 
     def setup_labels(self):
         self.pelt_name_label = create_text_box("pelt name", (275, 45), (150, 40), "#text_box_30_horizleft")
@@ -180,6 +183,7 @@ class CustomizeCatScreen(Screens):
         self.pose_left_button = create_button((450, 455), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pose_right_button = create_button((570, 455), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.reverse_button = create_button((705, 455), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
+        self.reset_button = create_button((25, 60), (105, 30), "Reset", ButtonStyles.SQUOVAL)
 
     def setup_dropdowns(self):
         self.pelt_name_dropdown = create_dropdown((275, 75), (150, 40), self.pelt_names, self.the_cat.pelt.name)
@@ -240,6 +244,7 @@ class CustomizeCatScreen(Screens):
         self.setup_eye_colours()
         self.setup_poses()
         self.setup_reverse()
+        self.capture_initial_state()
 
     def setup_pelt_length(self):
         self.cat_elements["pelt_length_index"] = self.pelt_lengths.index(self.the_cat.pelt.length)
@@ -276,6 +281,58 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["reverse_value"] = self.the_cat.pelt.reverse
         self.update_reverse_display()
 
+    def capture_initial_state(self):
+        self.initial_state = {
+            "name": self.the_cat.pelt.name,
+            "colour": self.the_cat.pelt.colour,
+            "length": self.the_cat.pelt.length,
+            "pattern": self.the_cat.pelt.pattern,
+            "tortiebase": self.the_cat.pelt.tortiebase,
+            "tortiecolour": self.the_cat.pelt.tortiecolour,
+            "tortiepattern": self.the_cat.pelt.tortiepattern,
+            "white_patches": self.the_cat.pelt.white_patches,
+            "vitiligo": self.the_cat.pelt.vitiligo,
+            "points": self.the_cat.pelt.points,
+            "white_patches_tint": self.the_cat.pelt.white_patches_tint,
+            "tint": self.the_cat.pelt.tint,
+            "skin": self.the_cat.pelt.skin,
+            "eye_colour": self.the_cat.pelt.eye_colour,
+            "eye_colour2": self.the_cat.pelt.eye_colour2,
+            "accessory": self.the_cat.pelt.accessory,
+            "scars": self.the_cat.pelt.scars.copy(),
+            "reverse": self.the_cat.pelt.reverse,
+            "pose": self.cat_elements["current_pose"],
+            "cat_sprites": {
+                "young_adult": self.the_cat.pelt.cat_sprites.get("young adult"),
+                "adult": self.the_cat.pelt.cat_sprites.get("adult"),
+                "senior_adult": self.the_cat.pelt.cat_sprites.get("senior adult")
+            }
+        }
+
+    def reset_attributes(self):
+        for attribute, value in self.initial_state.items():
+            if attribute == 'scars':
+                self.the_cat.pelt.scars = value.copy()
+            elif attribute == 'pose':
+                self.cat_elements["current_pose"] = value
+                self.the_cat.pelt.cat_sprites[self.life_stage] = value
+            elif attribute == 'cat_sprites':
+                self.the_cat.pelt.cat_sprites['young adult'] = value['young_adult']
+                self.the_cat.pelt.cat_sprites['adult'] = value['adult']
+                self.the_cat.pelt.cat_sprites['senior adult'] = value['senior_adult']
+            else:
+                setattr(self.the_cat.pelt, attribute, value)
+        self.update_ui_elements()
+
+    def update_ui_elements(self):
+        self.kill_cat_elements()
+        self.back_button.kill()
+        self.setup_labels()
+        self.setup_buttons()
+        self.setup_dropdowns()
+        self.setup_cat_elements()
+        self.make_cat_sprite()
+
     def get_cat_age(self):
         self.life_stage = "adult" if self.the_cat.age in ["young adult", "adult", "senior adult"] else self.the_cat.age
 
@@ -293,6 +350,8 @@ class CustomizeCatScreen(Screens):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.back_button:
                 self.handle_back_button()
+            elif event.ui_element == self.reset_button:
+                self.reset_attributes()
             elif event.ui_element in [self.pelt_length_left_button, self.pelt_length_right_button]:
                 self.handle_pelt_length_buttons(event.ui_element)
             elif event.ui_element == self.heterochromia_checkbox:
@@ -586,9 +645,9 @@ class CustomizeCatScreen(Screens):
 
     def exit_screen(self):
         self.back_button.kill()
-        self._kill_cat_elements()
+        self.kill_cat_elements()
 
-    def _kill_cat_elements(self):
+    def kill_cat_elements(self):
         elements_to_kill = [
             "cat_name", "cat_image", "pelt_length", "pose", "heterochromia_checkbox", "reverse"
         ]
@@ -602,6 +661,7 @@ class CustomizeCatScreen(Screens):
 
     def kill_ui_elements(self):
         ui_elements = [
+            self.reset_button,
             self.pelt_name_label, self.pelt_name_dropdown,
             self.pelt_colour_label, self.pelt_colour_dropdown,
             self.pelt_length_label, self.pelt_length_left_button, self.pelt_length_right_button,
