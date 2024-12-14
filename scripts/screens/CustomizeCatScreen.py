@@ -124,6 +124,7 @@ class CustomizeCatScreen(Screens):
         self.scar3_dropdown = None
         self.scar4_dropdown = None
         self.scars = ["None"] + [scar.capitalize() for scar in (Pelt.scars1 + Pelt.scars2 + Pelt.scars3)]
+        self.initial_scar_selection = {}
         self.previous_scar_selection = {}
 
     # for testing purposes
@@ -215,6 +216,11 @@ class CustomizeCatScreen(Screens):
                                               scars[2].capitalize() if len(scars) > 2 else "None")
         self.scar4_dropdown = create_dropdown((625, 525), (150, 40), self.scars,
                                               scars[3].capitalize() if len(scars) > 3 else "None")
+
+        self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1].upper()
+        self.initial_scar_selection[self.scar2_dropdown] = self.scar2_dropdown.selected_option[1].upper()
+        self.initial_scar_selection[self.scar3_dropdown] = self.scar3_dropdown.selected_option[1].upper()
+        self.initial_scar_selection[self.scar4_dropdown] = self.scar4_dropdown.selected_option[1].upper()
 
     def setup_cat(self):
         self.get_cat_age()
@@ -337,6 +343,9 @@ class CustomizeCatScreen(Screens):
     def handle_back_button(self):
         if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
             self.the_cat.pelt.eye_colour2 = None
+
+        self.the_cat.pelt.scars = list(set(self.the_cat.pelt.scars))
+
         self.change_screen("profile screen")
 
     def handle_pelt_name_dropdown(self):
@@ -387,8 +396,8 @@ class CustomizeCatScreen(Screens):
 
     def handle_scar_dropdown(self, dropdown):
         selected_option = dropdown.selected_option[1].upper()
+        previous_selection = self.previous_scar_selection.get(dropdown, self.initial_scar_selection[dropdown])
 
-        previous_selection = self.previous_scar_selection.get(dropdown, "NONE")
         if previous_selection != "NONE" and previous_selection in self.the_cat.pelt.scars:
             self.the_cat.pelt.scars.remove(previous_selection)
 
