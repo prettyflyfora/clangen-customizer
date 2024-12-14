@@ -2,6 +2,7 @@ import random
 
 import pygame
 import pygame_gui
+from pygame import Rect
 from pygame_gui.elements import UIDropDownMenu, UITextBox
 
 from scripts.cat.cats import Cat
@@ -19,7 +20,7 @@ from scripts.utility import ui_scale, generate_sprite, ui_scale_dimensions, get_
 def create_text_box(text, pos, size, theme):
     return UITextBox(
         text,
-        ui_scale(pygame.Rect(pos, size)),
+        ui_scale(Rect(pos, size)),
         manager=MANAGER,
         object_id=get_text_box_theme(theme)
     )
@@ -27,7 +28,7 @@ def create_text_box(text, pos, size, theme):
 
 def create_button(pos, size, text, style):
     return UISurfaceImageButton(
-        ui_scale(pygame.Rect(pos, size)),
+        ui_scale(Rect(pos, size)),
         text,
         get_button_dict(style, size),
         object_id=f"@buttonstyles_{style.name.lower()}",
@@ -39,7 +40,7 @@ def create_dropdown(pos, size, options, selected_option="1"):
     return UIDropDownMenu(
         options,
         selected_option,
-        ui_scale(pygame.Rect(pos, size)),
+        ui_scale(Rect(pos, size)),
         manager=MANAGER
     )
 
@@ -108,10 +109,10 @@ class CustomizeCatScreen(Screens):
         self.eye_colour2_label = None
         self.eye_colour1_dropdown = None
         self.eye_colour2_dropdown = None
-        self.enable_heterochromia_text = None
+        self.heterochromia_text = None
         self.heterochromia = False
         self.eye_colours = [colour.capitalize() for colour in Pelt.eye_colours]
-        self.reverse = None
+        self.reverse_label = None
         self.reverse_button = None
         self.accessory_label = None
         self.accessory_dropdown = None
@@ -161,8 +162,7 @@ class CustomizeCatScreen(Screens):
         self.tint_label = create_text_box("tint", (450, 270), (150, 40), "#text_box_30_horizleft")
         self.skin_label = create_text_box("skin", (625, 270), (150, 40), "#text_box_30_horizleft")
         self.eye_colour1_label = create_text_box("eye colour 1", (275, 345), (150, 40), "#text_box_30_horizleft")
-        self.enable_heterochromia_text = create_text_box("heterochromia", (465, 378), (150, 40),
-                                                         "#text_box_30_horizcenter")
+        self.heterochromia_text = create_text_box("heterochromia", (465, 378), (150, 40), "#text_box_30_horizcenter")
         self.eye_colour2_label = create_text_box("eye colour 2", (625, 345), (150, 40), "#text_box_30_horizleft")
         self.accessory_label = create_text_box("accessory", (275, 420), (150, 40), "#text_box_30_horizleft")
         self.pose_label = create_text_box("pose", (450, 420), (150, 40), "#text_box_30_horizleft")
@@ -331,7 +331,8 @@ class CustomizeCatScreen(Screens):
                 self.handle_eye_colour_dropdown(event.ui_element)
             elif event.ui_element == self.accessory_dropdown:
                 self.handle_accessory_dropdown()
-            elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown]:
+            elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown,
+                                      self.scar4_dropdown]:
                 self.handle_scar_dropdown(event.ui_element)
             self.print_pelt_attributes()  # for testing purposes
 
@@ -614,7 +615,7 @@ class CustomizeCatScreen(Screens):
             self.skin_label, self.skin_dropdown,
             self.white_patches_tint_label, self.white_patches_tint_dropdown,
             self.tint_label, self.tint_dropdown,
-            self.eye_colour1_label, self.eye_colour2_label, self.enable_heterochromia_text, self.eye_colour1_dropdown,
+            self.eye_colour1_label, self.eye_colour2_label, self.heterochromia_text, self.eye_colour1_dropdown,
             self.eye_colour2_dropdown,
             self.pose_label, self.pose_left_button, self.pose_right_button,
             self.reverse_label, self.reverse_button,
