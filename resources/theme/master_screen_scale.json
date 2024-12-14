@@ -198,15 +198,11 @@
     "drop_down_menu": {
         "colours": {
             "normal_bg": "#655934",
-            "hovered_bg": "#453c20",
-            "disabled_bg": "#5C5850",
-            "selected_bg": "#655934",
-            "active_bg": "#655934",
-            "normal_border": "#776045",
+            "hovered_bg": "#1E1809",
+            "disabled_bg": "#6d6860",
+            "normal_border": "#2f2918",
             "hovered_border": "#291B0F",
-            "disabled_border": "#706B64",
-            "selected_border": "#776045",
-            "active_border": "#776045"
+            "disabled_border": "#4f4c46"
         },
         "misc": {
             "shape": "rounded_rectangle",
@@ -216,9 +212,11 @@
     },
     "drop_down_menu.button": {
         "colours": {
-            "hovered_bg": "#453c20",
+            "hovered_bg": "#1E1809",
             "normal_text": "#EFE5CE",
-            "hovered_text": "#EFE5CE"
+            "hovered_text": "#EFE5CE",
+            "selected_text": "#453c20",
+            "disabled_text": "#EFE5CE"
         }
     },
     "drop_down_menu.#drop_down_options_list": {
@@ -229,10 +227,10 @@
     },
     "drop_down_menu.#drop_down_options_list.button": {
         "colours": {
-            "hovered_bg": "#453c20",
+            "hovered_bg": "#1E1809",
             "normal_text": "#EFE5CE",
             "hovered_text": "#EFE5CE",
-            "selected_text": "#453c20"
+            "selected_text": "#1E1809"
         }
     },
     "#dropup": {
