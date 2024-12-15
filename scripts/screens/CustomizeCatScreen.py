@@ -596,10 +596,10 @@ class CustomizeCatScreen(Screens):
             for dropdown in dropdowns:
                 dropdown.kill()
 
-            self.pattern_dropdown = create_dropdown((100, 150), (150, 40), self.patterns, "None")
-            self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), self.tortie_bases, "None")
-            self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), self.tortie_colours, "None")
-            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), self.tortie_bases, "None")
+            self.pattern_dropdown = create_dropdown((100, 150), (150, 40), "None", "None")
+            self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), "None", "None")
+            self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), "None", "None")
+            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), "None", "None")
 
             self.the_cat.pelt.pattern = None
             self.the_cat.pelt.tortiebase = None
@@ -641,12 +641,11 @@ class CustomizeCatScreen(Screens):
         else:
             self.the_cat.pelt.eye_colour2 = None
             self.eye_colour2_dropdown.kill()
-            self.eye_colour2_dropdown = create_dropdown(
-                (625, 375),
-                (150, 40),
-                self.eye_colours,
-                self.eye_colour1_dropdown.selected_option[1]
-            )
+            self.eye_colour2_dropdown = create_dropdown((625, 375), (150, 40),
+                                                        create_options_list(self.eye_colours, "upper"), (
+                                                            get_selected_option(self.the_cat.pelt.eye_colour2,
+                                                                                "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(
+                                                                self.the_cat.pelt.eye_colour, "upper")))
             self.eye_colour2_dropdown.disable()
         self.make_heterochromia_checkbox()
         self.make_cat_sprite()
