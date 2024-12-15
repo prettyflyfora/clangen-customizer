@@ -44,6 +44,7 @@ def create_dropdown(pos, size, options, selected_option):
         manager=MANAGER
     )
 
+
 def create_options_list(attribute, case):
     if case == "upper":
         return [(option.capitalize(), option.upper()) for option in attribute]
@@ -51,6 +52,7 @@ def create_options_list(attribute, case):
         return [(option.capitalize(), option.lower()) for option in attribute]
     else:
         return [(option.capitalize(), option) for option in attribute]
+
 
 def get_selected_option(attribute, case):
     if isinstance(attribute, list):
@@ -72,6 +74,7 @@ def get_selected_option(attribute, case):
             return "None", "none"
         else:
             return "None", "None"
+
 
 class CustomizeCatScreen(Screens):
     def __init__(self, name=None):
@@ -120,10 +123,12 @@ class CustomizeCatScreen(Screens):
         self.points_markings.insert(0, "None")
         self.white_patches_tint_label = None
         self.white_patches_tint_dropdown = None
-        self.white_patches_tints = ["None"] + [tint for tint in sprites.white_patches_tints["tint_colours"].keys() if tint != "none"]
+        self.white_patches_tints = ["None"] + [tint for tint in sprites.white_patches_tints["tint_colours"].keys() if
+                                               tint != "none"]
         self.tint_label = None
         self.tint_dropdown = None
-        self.tints = [tint for tint in list(sprites.cat_tints["tint_colours"].keys()) + list(sprites.cat_tints["dilute_tint_colours"].keys()) if tint != "none"]
+        self.tints = [tint for tint in list(sprites.cat_tints["tint_colours"].keys()) + list(
+            sprites.cat_tints["dilute_tint_colours"].keys()) if tint != "none"]
         self.tints.insert(0, "None")
         self.skin_label = None
         self.skin_dropdown = None
@@ -143,7 +148,8 @@ class CustomizeCatScreen(Screens):
         self.reverse_button = None
         self.accessory_label = None
         self.accessory_dropdown = None
-        self.accessories = ["None"] + list(dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
+        self.accessories = ["None"] + list(
+            dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
         self.scar1_label = None
         self.scar2_label = None
         self.scar3_label = None
@@ -210,27 +216,60 @@ class CustomizeCatScreen(Screens):
         self.reset_button = create_button((25, 60), (105, 30), "Reset", ButtonStyles.SQUOVAL)
 
     def setup_dropdowns(self):
-        self.pelt_name_dropdown = create_dropdown((275, 75), (150, 40), create_options_list(self.pelt_names, "capitalize"), get_selected_option(self.the_cat.pelt.name, "capitalize"))
-        self.pelt_colour_dropdown = create_dropdown((450, 75), (150, 40), create_options_list(self.pelt_colours, "upper"), get_selected_option(self.the_cat.pelt.colour, "upper"))
-        self.pattern_dropdown = create_dropdown((100, 150), (150, 40), create_options_list(self.patterns, "upper"), get_selected_option(self.the_cat.pelt.pattern, "upper"))
-        self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), create_options_list(self.tortie_bases, "lower"), get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
-        self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), create_options_list(self.tortie_colours, "upper"), get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
-        self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), create_options_list(self.tortie_bases, "lower"), get_selected_option(self.the_cat.pelt.tortiepattern, "lower"))
-        self.white_patches_dropdown = create_dropdown((275, 225), (150, 40), create_options_list(self.white_patches, "upper"), get_selected_option(self.the_cat.pelt.white_patches, "upper"))
-        self.vitiligo_dropdown = create_dropdown((450, 225), (150, 40), create_options_list(self.vitiligo_patterns, "upper"), get_selected_option(self.the_cat.pelt.vitiligo, "upper"))
-        self.points_dropdown = create_dropdown((625, 225), (150, 40), create_options_list(self.points_markings, "upper"), get_selected_option(self.the_cat.pelt.points, "upper"))
-        self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40), create_options_list(self.white_patches_tints, "lower"), get_selected_option(self.the_cat.pelt.white_patches_tint, "lower"))
-        self.tint_dropdown = create_dropdown((450, 300), (150, 40), create_options_list(self.tints, "lower"), get_selected_option(self.the_cat.pelt.tint, "lower"))
-        self.skin_dropdown = create_dropdown((625, 300), (150, 40), create_options_list(self.skins, "upper"), get_selected_option(self.the_cat.pelt.skin, "upper"))
-        self.eye_colour1_dropdown = create_dropdown((275, 375), (150, 40), create_options_list(self.eye_colours, "upper"), get_selected_option(self.the_cat.pelt.eye_colour, "upper"))
-        self.eye_colour2_dropdown = create_dropdown((625, 375), (150, 40), create_options_list(self.eye_colours, "upper"), (get_selected_option(self.the_cat.pelt.eye_colour2, "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(self.the_cat.pelt.eye_colour, "upper")))
-        self.accessory_dropdown = create_dropdown((275, 450), (150, 40), create_options_list(self.accessories, "upper"), get_selected_option(self.the_cat.pelt.accessory, "upper"))
+        self.pelt_name_dropdown = create_dropdown((275, 75), (150, 40),
+                                                  create_options_list(self.pelt_names, "capitalize"),
+                                                  get_selected_option(self.the_cat.pelt.name, "capitalize"))
+        self.pelt_colour_dropdown = create_dropdown((450, 75), (150, 40),
+                                                    create_options_list(self.pelt_colours, "upper"),
+                                                    get_selected_option(self.the_cat.pelt.colour, "upper"))
+        self.pattern_dropdown = create_dropdown((100, 150), (150, 40), create_options_list(self.patterns, "upper"),
+                                                get_selected_option(self.the_cat.pelt.pattern, "upper"))
+        self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40),
+                                                    create_options_list(self.tortie_bases, "lower"),
+                                                    get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
+        self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40),
+                                                      create_options_list(self.tortie_colours, "upper"),
+                                                      get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
+        self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40),
+                                                       create_options_list(self.tortie_bases, "lower"),
+                                                       get_selected_option(self.the_cat.pelt.tortiepattern, "lower"))
+        self.white_patches_dropdown = create_dropdown((275, 225), (150, 40),
+                                                      create_options_list(self.white_patches, "upper"),
+                                                      get_selected_option(self.the_cat.pelt.white_patches, "upper"))
+        self.vitiligo_dropdown = create_dropdown((450, 225), (150, 40),
+                                                 create_options_list(self.vitiligo_patterns, "upper"),
+                                                 get_selected_option(self.the_cat.pelt.vitiligo, "upper"))
+        self.points_dropdown = create_dropdown((625, 225), (150, 40),
+                                               create_options_list(self.points_markings, "upper"),
+                                               get_selected_option(self.the_cat.pelt.points, "upper"))
+        self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40),
+                                                           create_options_list(self.white_patches_tints, "lower"),
+                                                           get_selected_option(self.the_cat.pelt.white_patches_tint,
+                                                                               "lower"))
+        self.tint_dropdown = create_dropdown((450, 300), (150, 40), create_options_list(self.tints, "lower"),
+                                             get_selected_option(self.the_cat.pelt.tint, "lower"))
+        self.skin_dropdown = create_dropdown((625, 300), (150, 40), create_options_list(self.skins, "upper"),
+                                             get_selected_option(self.the_cat.pelt.skin, "upper"))
+        self.eye_colour1_dropdown = create_dropdown((275, 375), (150, 40),
+                                                    create_options_list(self.eye_colours, "upper"),
+                                                    get_selected_option(self.the_cat.pelt.eye_colour, "upper"))
+        self.eye_colour2_dropdown = create_dropdown((625, 375), (150, 40),
+                                                    create_options_list(self.eye_colours, "upper"), (
+                                                        get_selected_option(self.the_cat.pelt.eye_colour2,
+                                                                            "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(
+                                                            self.the_cat.pelt.eye_colour, "upper")))
+        self.accessory_dropdown = create_dropdown((275, 450), (150, 40), create_options_list(self.accessories, "upper"),
+                                                  get_selected_option(self.the_cat.pelt.accessory, "upper"))
 
         scars = self.the_cat.pelt.scars
-        self.scar1_dropdown = create_dropdown((100, 525), (150, 40), create_options_list(self.scars, "upper"), get_selected_option(scars, "upper"))
-        self.scar2_dropdown = create_dropdown((275, 525), (150, 40), create_options_list(self.scars, "upper"), get_selected_option(scars[1:], "upper"))
-        self.scar3_dropdown = create_dropdown((450, 525), (150, 40), create_options_list(self.scars, "upper"), get_selected_option(scars[2:], "upper"))
-        self.scar4_dropdown = create_dropdown((625, 525), (150, 40), create_options_list(self.scars, "upper"), get_selected_option(scars[3:], "upper"))
+        self.scar1_dropdown = create_dropdown((100, 525), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars, "upper"))
+        self.scar2_dropdown = create_dropdown((275, 525), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[1:], "upper"))
+        self.scar3_dropdown = create_dropdown((450, 525), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[2:], "upper"))
+        self.scar4_dropdown = create_dropdown((625, 525), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[3:], "upper"))
 
         self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1]
         self.initial_scar_selection[self.scar2_dropdown] = self.scar2_dropdown.selected_option[1]
@@ -258,7 +297,7 @@ class CustomizeCatScreen(Screens):
         self.update_pelt_length_display()
 
     def setup_tortie(self):
-        if self.the_cat.pelt.name not in ['Calico', 'Tortie']:
+        if self.the_cat.pelt.name not in ["Calico", "Tortie"]:
             self.pattern_dropdown.disable()
             self.tortie_base_dropdown.disable()
             self.tortie_colour_dropdown.disable()
@@ -318,15 +357,15 @@ class CustomizeCatScreen(Screens):
 
     def reset_attributes(self):
         for attribute, value in self.initial_state.items():
-            if attribute == 'scars':
+            if attribute == "scars":
                 self.the_cat.pelt.scars = value.copy()
-            elif attribute == 'pose':
+            elif attribute == "pose":
                 self.cat_elements["current_pose"] = value
                 self.the_cat.pelt.cat_sprites[self.life_stage] = value
-            elif attribute == 'cat_sprites':
-                self.the_cat.pelt.cat_sprites['young adult'] = value['young_adult']
-                self.the_cat.pelt.cat_sprites['adult'] = value['adult']
-                self.the_cat.pelt.cat_sprites['senior adult'] = value['senior_adult']
+            elif attribute == "cat_sprites":
+                self.the_cat.pelt.cat_sprites["young adult"] = value["young_adult"]
+                self.the_cat.pelt.cat_sprites["adult"] = value["adult"]
+                self.the_cat.pelt.cat_sprites["senior adult"] = value["senior_adult"]
             else:
                 setattr(self.the_cat.pelt, attribute, value)
         self.update_ui_elements()
@@ -388,16 +427,17 @@ class CustomizeCatScreen(Screens):
             elif event.ui_element == self.points_dropdown:
                 self.handle_points_dropdown()
             elif event.ui_element == self.white_patches_tint_dropdown:
-                self.handle_dropdown_change(self.white_patches_tint_dropdown, 'white_patches_tint')
+                self.handle_dropdown_change(self.white_patches_tint_dropdown, "white_patches_tint")
             elif event.ui_element == self.tint_dropdown:
-                self.handle_dropdown_change(self.tint_dropdown, 'tint')
+                self.handle_dropdown_change(self.tint_dropdown, "tint")
             elif event.ui_element == self.skin_dropdown:
-                self.handle_dropdown_change(self.skin_dropdown, 'skin')
+                self.handle_dropdown_change(self.skin_dropdown, "skin")
             elif event.ui_element in [self.eye_colour1_dropdown, self.eye_colour2_dropdown]:
                 self.handle_eye_colour_dropdown(event.ui_element)
             elif event.ui_element == self.accessory_dropdown:
                 self.handle_accessory_dropdown()
-            elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown]:
+            elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown,
+                                      self.scar4_dropdown]:
                 self.handle_scar_dropdown(event.ui_element)
             self.print_pelt_attributes()  # for testing purposes
 
@@ -493,19 +533,19 @@ class CustomizeCatScreen(Screens):
 
             if self.life_stage == "adult":
                 if not self.the_cat.pelt.paralyzed:
-                    self.the_cat.pelt.cat_sprites['young adult'] = self.cat_elements["current_pose"]
-                    self.the_cat.pelt.cat_sprites['adult'] = self.cat_elements["current_pose"]
-                    self.the_cat.pelt.cat_sprites['senior adult'] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites["young adult"] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites["adult"] = self.cat_elements["current_pose"]
+                    self.the_cat.pelt.cat_sprites["senior adult"] = self.cat_elements["current_pose"]
                 else:
                     random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
-                    self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
-                    self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
-                    self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites["young adult"] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites["adult"] = random_adult_sprite
+                    self.the_cat.pelt.cat_sprites["senior adult"] = random_adult_sprite
             else:
                 random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
-                self.the_cat.pelt.cat_sprites['young adult'] = random_adult_sprite
-                self.the_cat.pelt.cat_sprites['adult'] = random_adult_sprite
-                self.the_cat.pelt.cat_sprites['senior adult'] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites["young adult"] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites["adult"] = random_adult_sprite
+                self.the_cat.pelt.cat_sprites["senior adult"] = random_adult_sprite
 
             self.update_pose_display()
             self.make_cat_sprite()
@@ -530,7 +570,7 @@ class CustomizeCatScreen(Screens):
             self.tortie_colour_dropdown,
             self.tortie_pattern_dropdown
         ]
-        if self.the_cat.pelt.name in ['Calico', 'Tortie']:
+        if self.the_cat.pelt.name in ["Calico", "Tortie"]:
             for dropdown in dropdowns:
                 dropdown.kill()
 
@@ -539,10 +579,18 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.tortiecolour = self.tortie_colours[0]
             self.the_cat.pelt.tortiepattern = self.tortie_bases[0]
 
-            self.pattern_dropdown = create_dropdown((100, 150), (150, 40), create_options_list(self.patterns, "upper"), get_selected_option(self.the_cat.pelt.pattern, "upper"))
-            self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40), create_options_list(self.tortie_bases, "lower"), get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
-            self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40), create_options_list(self.tortie_colours, "upper"), get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
-            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40), create_options_list(self.tortie_bases, "lower"), get_selected_option(self.the_cat.pelt.tortiepattern, "lower"))
+            self.pattern_dropdown = create_dropdown((100, 150), (150, 40), create_options_list(self.patterns, "upper"),
+                                                    get_selected_option(self.the_cat.pelt.pattern, "upper"))
+            self.tortie_base_dropdown = create_dropdown((275, 150), (150, 40),
+                                                        create_options_list(self.tortie_bases, "lower"),
+                                                        get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
+            self.tortie_colour_dropdown = create_dropdown((450, 150), (150, 40),
+                                                          create_options_list(self.tortie_colours, "upper"),
+                                                          get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
+            self.tortie_pattern_dropdown = create_dropdown((625, 150), (150, 40),
+                                                           create_options_list(self.tortie_bases, "lower"),
+                                                           get_selected_option(self.the_cat.pelt.tortiepattern,
+                                                                               "lower"))
 
         else:
             for dropdown in dropdowns:
@@ -566,7 +614,10 @@ class CustomizeCatScreen(Screens):
         if self.the_cat.pelt.points is None and self.the_cat.pelt.white_patches is None:
             self.the_cat.pelt.white_patches_tint = "none"
             self.white_patches_tint_dropdown.kill()
-            self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40), create_options_list(self.white_patches_tints, "lower"), get_selected_option(self.the_cat.pelt.white_patches_tint, "lower"))
+            self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40),
+                                                               create_options_list(self.white_patches_tints, "lower"),
+                                                               get_selected_option(self.the_cat.pelt.white_patches_tint,
+                                                                                   "lower"))
             self.white_patches_tint_dropdown.disable()
         else:
             self.white_patches_tint_dropdown.enable()
@@ -615,8 +666,8 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["current_pose"] = self.poses[new_index]
         self.the_cat.pelt.cat_sprites[self.life_stage] = self.cat_elements["current_pose"]
         if self.life_stage == "adult":
-            self.the_cat.pelt.cat_sprites['young adult'] = self.cat_elements["current_pose"]
-            self.the_cat.pelt.cat_sprites['senior adult'] = self.cat_elements["current_pose"]
+            self.the_cat.pelt.cat_sprites["young adult"] = self.cat_elements["current_pose"]
+            self.the_cat.pelt.cat_sprites["senior adult"] = self.cat_elements["current_pose"]
         self.update_pose_display()
         self.make_cat_sprite()
 
