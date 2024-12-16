@@ -288,6 +288,7 @@ class CustomizeCatScreen(Screens):
         self.setup_tortie()
         self.setup_white_patches_tint()
         self.setup_eye_colours()
+        self.setup_accessory()
         self.setup_poses()
         self.setup_reverse()
         self.capture_initial_state()
@@ -314,6 +315,10 @@ class CustomizeCatScreen(Screens):
         else:
             self.heterochromia = True
         self.make_heterochromia_checkbox()
+
+    def setup_accessory(self):
+        if self.life_stage == "newborn":
+            self.accessory_dropdown.disable()
 
     def setup_poses(self):
         if self.life_stage == "newborn" or self.the_cat.pelt.paralyzed:
