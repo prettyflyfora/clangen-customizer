@@ -199,9 +199,9 @@ class CustomizeCatScreen(Screens):
         self.eye_colour1_label = create_text_box("eye colour 1", (275, 345), (150, 40), "#text_box_30_horizleft")
         self.heterochromia_text = create_text_box("heterochromia", (465, 378), (150, 40), "#text_box_30_horizcenter")
         self.eye_colour2_label = create_text_box("eye colour 2", (625, 345), (150, 40), "#text_box_30_horizleft")
-        self.accessory_label = create_text_box("accessory", (275, 420), (150, 40), "#text_box_30_horizleft")
-        self.pose_label = create_text_box("pose", (450, 420), (150, 40), "#text_box_30_horizleft")
-        self.reverse_label = create_text_box("reverse", (625, 420), (150, 40), "#text_box_30_horizleft")
+        self.accessory_label = create_text_box("accessory", (570, 480), (150, 40), "#text_box_30_horizleft")
+        self.pose_label = create_text_box("pose", (427, 480), (110, 40), "#text_box_30_horizleft")
+        self.reverse_label = create_text_box("reverse", (264, 480), (130, 40), "#text_box_30_horizleft")
         self.scar_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.", (50, 650), (500, 40), "#text_box_26_horizleft")
         self.scar1_label = create_text_box("scar 1", (50, 575), (150, 40), "#text_box_30_horizleft")
         self.scar2_label = create_text_box("scar 2", (234, 575), (150, 40), "#text_box_30_horizleft")
@@ -213,9 +213,9 @@ class CustomizeCatScreen(Screens):
         self.pelt_length_left_button = create_button((625, 80), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pelt_length_right_button = create_button((745, 80), (30, 30), get_arrow(1, False),
                                                       ButtonStyles.ROUNDED_RECT)
-        self.pose_left_button = create_button((450, 455), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pose_right_button = create_button((570, 455), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
-        self.reverse_button = create_button((705, 455), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = create_button((427, 515), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = create_button((507, 515), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
+        self.reverse_button = create_button((324, 515), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
         self.reset_button = create_button((25, 60), (105, 30), "Reset", ButtonStyles.SQUOVAL)
 
     def setup_dropdowns(self):
@@ -261,7 +261,7 @@ class CustomizeCatScreen(Screens):
                                                         get_selected_option(self.the_cat.pelt.eye_colour2,
                                                                             "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(
                                                             self.the_cat.pelt.eye_colour, "upper")))
-        self.accessory_dropdown = create_dropdown((275, 450), (150, 40), create_options_list(self.accessories, "upper"),
+        self.accessory_dropdown = create_dropdown((570, 510), (180, 40), create_options_list(self.accessories, "upper"),
                                                   get_selected_option(self.the_cat.pelt.accessory, "upper"))
 
         scars = self.the_cat.pelt.scars
@@ -682,7 +682,7 @@ class CustomizeCatScreen(Screens):
         self.kill_cat_element("pose")
         pose_text = "none" if (self.the_cat.pelt.paralyzed or self.life_stage == "newborn") else str(
             self.cat_elements["current_pose"])
-        self.cat_elements["pose"] = create_text_box(pose_text, (480, 453), (90, 40), "#text_box_30_horizcenter")
+        self.cat_elements["pose"] = create_text_box(pose_text, (457, 513), (50, 40), "#text_box_30_horizcenter")
 
     def change_reverse(self):
         self.the_cat.pelt.reverse = not self.the_cat.pelt.reverse
@@ -692,7 +692,7 @@ class CustomizeCatScreen(Screens):
     def update_reverse_display(self):
         self.kill_cat_element("reverse")
         reverse_text = "true" if self.the_cat.pelt.reverse else "false"
-        self.cat_elements["reverse"] = create_text_box(reverse_text, (625, 453), (80, 40), "#text_box_30_horizcenter")
+        self.cat_elements["reverse"] = create_text_box(reverse_text, (264, 513), (50, 40), "#text_box_30_horizcenter")
 
     def exit_screen(self):
         self.back_button.kill()
