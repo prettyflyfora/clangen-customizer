@@ -36,11 +36,12 @@ def create_button(pos, size, text, style):
     )
 
 
-def create_dropdown(pos, size, options, selected_option):
+def create_dropdown(pos, size, options, selected_option, style=None):
     return UIDropDownMenu(
         options,
         selected_option,
         ui_scale(Rect(pos, size)),
+        object_id=f"#{style}",
         manager=MANAGER
     )
 
@@ -150,6 +151,7 @@ class CustomizeCatScreen(Screens):
         self.accessory_dropdown = None
         self.accessories = ["None"] + list(
             dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
+        self.scars_message = None
         self.scar1_label = None
         self.scar2_label = None
         self.scar3_label = None
@@ -200,10 +202,11 @@ class CustomizeCatScreen(Screens):
         self.accessory_label = create_text_box("accessory", (275, 420), (150, 40), "#text_box_30_horizleft")
         self.pose_label = create_text_box("pose", (450, 420), (150, 40), "#text_box_30_horizleft")
         self.reverse_label = create_text_box("reverse", (625, 420), (150, 40), "#text_box_30_horizleft")
-        self.scar1_label = create_text_box("scar 1", (100, 495), (150, 40), "#text_box_30_horizleft")
-        self.scar2_label = create_text_box("scar 2", (275, 495), (150, 40), "#text_box_30_horizleft")
-        self.scar3_label = create_text_box("scar 3", (450, 495), (150, 40), "#text_box_30_horizleft")
-        self.scar4_label = create_text_box("scar 4", (625, 495), (150, 40), "#text_box_30_horizleft")
+        self.scars_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.", (50, 650), (500, 40), "#text_box_26_horizleft")
+        self.scar1_label = create_text_box("scar 1", (50, 575), (150, 40), "#text_box_30_horizleft")
+        self.scar2_label = create_text_box("scar 2", (234, 575), (150, 40), "#text_box_30_horizleft")
+        self.scar3_label = create_text_box("scar 3", (417, 575), (150, 40), "#text_box_30_horizleft")
+        self.scar4_label = create_text_box("scar 4", (600, 575), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
         self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
@@ -262,14 +265,14 @@ class CustomizeCatScreen(Screens):
                                                   get_selected_option(self.the_cat.pelt.accessory, "upper"))
 
         scars = self.the_cat.pelt.scars
-        self.scar1_dropdown = create_dropdown((100, 525), (150, 40), create_options_list(self.scars, "upper"),
-                                              get_selected_option(scars, "upper"))
-        self.scar2_dropdown = create_dropdown((275, 525), (150, 40), create_options_list(self.scars, "upper"),
-                                              get_selected_option(scars[1:], "upper"))
-        self.scar3_dropdown = create_dropdown((450, 525), (150, 40), create_options_list(self.scars, "upper"),
-                                              get_selected_option(scars[2:], "upper"))
-        self.scar4_dropdown = create_dropdown((625, 525), (150, 40), create_options_list(self.scars, "upper"),
-                                              get_selected_option(scars[3:], "upper"))
+        self.scar1_dropdown = create_dropdown((50, 605), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars, "upper"), "dropup")
+        self.scar2_dropdown = create_dropdown((234, 605), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[1:], "upper"), "dropup")
+        self.scar3_dropdown = create_dropdown((417, 605), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[2:], "upper"), "dropup")
+        self.scar4_dropdown = create_dropdown((600, 605), (150, 40), create_options_list(self.scars, "upper"),
+                                              get_selected_option(scars[3:], "upper"), "dropup")
 
         self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1]
         self.initial_scar_selection[self.scar2_dropdown] = self.scar2_dropdown.selected_option[1]
