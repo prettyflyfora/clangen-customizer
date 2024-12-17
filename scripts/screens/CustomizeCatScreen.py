@@ -151,7 +151,7 @@ class CustomizeCatScreen(Screens):
         self.accessory_dropdown = None
         self.accessories = ["None"] + list(
             dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
-        self.scars_message = None
+        self.scar_message = None
         self.scar1_label = None
         self.scar2_label = None
         self.scar3_label = None
@@ -202,7 +202,7 @@ class CustomizeCatScreen(Screens):
         self.accessory_label = create_text_box("accessory", (275, 420), (150, 40), "#text_box_30_horizleft")
         self.pose_label = create_text_box("pose", (450, 420), (150, 40), "#text_box_30_horizleft")
         self.reverse_label = create_text_box("reverse", (625, 420), (150, 40), "#text_box_30_horizleft")
-        self.scars_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.", (50, 650), (500, 40), "#text_box_26_horizleft")
+        self.scar_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.", (50, 650), (500, 40), "#text_box_26_horizleft")
         self.scar1_label = create_text_box("scar 1", (50, 575), (150, 40), "#text_box_30_horizleft")
         self.scar2_label = create_text_box("scar 2", (234, 575), (150, 40), "#text_box_30_horizleft")
         self.scar3_label = create_text_box("scar 3", (417, 575), (150, 40), "#text_box_30_horizleft")
@@ -731,6 +731,7 @@ class CustomizeCatScreen(Screens):
             self.pose_label, self.pose_left_button, self.pose_right_button,
             self.reverse_label, self.reverse_button,
             self.accessory_label, self.accessory_dropdown,
+            self.scar_message,
             self.scar1_label, self.scar2_label, self.scar3_label, self.scar4_label,
             self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown,
         ]
