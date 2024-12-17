@@ -222,7 +222,7 @@ class CustomizeCatScreen(Screens):
         self.pose_label = create_text_box("pose", (406, 495), (110, 40), "#text_box_22_horizleft")
         self.reverse_label = create_text_box("reverse", (52, 495), (130, 40), "#text_box_22_horizleft")
         self.scar_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.",
-                                            (56, 650), (500, 40), "#text_box_26_horizleft")
+                                            (52, 650), (500, 40), "#text_box_26_horizleft")
         self.scar1_label = create_text_box("scar 1", (56, 580), (130, 40), "#text_box_22_horizleft")
         self.scar2_label = create_text_box("scar 2", (242, 580), (130, 40), "#text_box_22_horizleft")
         self.scar3_label = create_text_box("scar 3", (428, 580), (130, 40), "#text_box_22_horizleft")
@@ -287,13 +287,13 @@ class CustomizeCatScreen(Screens):
                                                   get_selected_option(self.the_cat.pelt.accessory, "upper"), "dropup")
 
         scars = self.the_cat.pelt.scars
-        self.scar1_dropdown = create_dropdown((56, 605), (130, 40), create_options_list(self.scars, "upper"),
+        self.scar1_dropdown = create_dropdown((52, 605), (135, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars, "upper"), "dropup")
-        self.scar2_dropdown = create_dropdown((242, 605), (130, 40), create_options_list(self.scars, "upper"),
+        self.scar2_dropdown = create_dropdown((238, 605), (135, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[1:], "upper"), "dropup")
-        self.scar3_dropdown = create_dropdown((428, 605), (130, 40), create_options_list(self.scars, "upper"),
+        self.scar3_dropdown = create_dropdown((424, 605), (135, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[2:], "upper"), "dropup")
-        self.scar4_dropdown = create_dropdown((614, 605), (130, 40), create_options_list(self.scars, "upper"),
+        self.scar4_dropdown = create_dropdown((610, 605), (135, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[3:], "upper"), "dropup")
 
         self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1]
@@ -741,7 +741,7 @@ class CustomizeCatScreen(Screens):
     def update_reverse_display(self):
         self.kill_cat_element("reverse")
         reverse_text = "true" if self.the_cat.pelt.reverse else "false"
-        self.cat_elements["reverse"] = create_text_box(reverse_text, (52, 528), (40, 40), "#text_box_26_horizcenter")
+        self.cat_elements["reverse"] = create_text_box(reverse_text, (52, 528), (45, 40), "#text_box_26_horizcenter")
 
     def exit_screen(self):
         self.kill_cat_elements()
