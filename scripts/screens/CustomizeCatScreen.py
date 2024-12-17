@@ -195,99 +195,99 @@ class CustomizeCatScreen(Screens):
 
     def setup_labels(self):
         self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 25), (250, 40), "#text_box_34_horizcenter", {"centerx": "centerx"})
-        self.pelt_name_label = create_text_box("pelt name", (275, 95), (150, 40), "#text_box_30_horizleft")
-        self.pelt_colour_label = create_text_box("pelt colour", (450, 95), (150, 40), "#text_box_30_horizleft")
-        self.pelt_length_label = create_text_box("pelt length", (265, 490), (150, 40), "#text_box_30_horizleft")
-        self.pattern_label = create_text_box("pattern", (625, 95), (150, 40), "#text_box_30_horizleft")
-        self.tortie_base_label = create_text_box("tortie base", (275, 170), (150, 40), "#text_box_30_horizleft")
-        self.tortie_colour_label = create_text_box("tortie colour", (450, 170), (150, 40), "#text_box_30_horizleft")
-        self.tortie_pattern_label = create_text_box("tortie pattern", (625, 170), (150, 40), "#text_box_30_horizleft")
-        self.white_patches_label = create_text_box("white patches", (275, 255), (150, 40), "#text_box_30_horizleft")
-        self.vitiligo_label = create_text_box("vitiligo", (450, 255), (150, 40), "#text_box_30_horizleft")
-        self.points_label = create_text_box("point", (625, 255), (150, 40), "#text_box_30_horizleft")
-        self.white_patches_tint_label = create_text_box("white patches tint", (275, 330), (150, 40),
-                                                        "#text_box_30_horizleft")
-        self.tint_label = create_text_box("tint", (450, 330), (150, 40), "#text_box_30_horizleft")
-        self.skin_label = create_text_box("skin", (625, 330), (150, 40), "#text_box_30_horizleft")
-        self.eye_colour1_label = create_text_box("eye colour 1", (275, 415), (150, 40), "#text_box_30_horizleft")
-        self.heterochromia_text = create_text_box("heterochromia", (465, 447), (150, 40), "#text_box_30_horizcenter")
-        self.eye_colour2_label = create_text_box("eye colour 2", (625, 415), (150, 40), "#text_box_30_horizleft")
-        self.accessory_label = create_text_box("accessory", (595, 490), (150, 40), "#text_box_30_horizleft")
-        self.pose_label = create_text_box("pose", (445, 490), (110, 40), "#text_box_30_horizleft")
-        self.reverse_label = create_text_box("reverse", (100, 490), (130, 40), "#text_box_30_horizleft")
+        self.pelt_name_label = create_text_box("pelt name", (275, 100), (130, 40), "#text_box_22_horizleft")
+        self.pelt_colour_label = create_text_box("pelt colour", (450, 100), (130, 40), "#text_box_22_horizleft")
+        self.pelt_length_label = create_text_box("pelt length", (224, 495), (130, 40), "#text_box_22_horizleft")
+        self.pattern_label = create_text_box("pattern", (625, 100), (130, 40), "#text_box_22_horizleft")
+        self.tortie_base_label = create_text_box("tortie base", (275, 175), (130, 40), "#text_box_22_horizleft")
+        self.tortie_colour_label = create_text_box("tortie colour", (450, 175), (130, 40), "#text_box_22_horizleft")
+        self.tortie_pattern_label = create_text_box("tortie pattern", (625, 175), (130, 40), "#text_box_22_horizleft")
+        self.white_patches_label = create_text_box("white patches", (275, 260), (130, 40), "#text_box_22_horizleft")
+        self.vitiligo_label = create_text_box("vitiligo", (450, 260), (130, 40), "#text_box_22_horizleft")
+        self.points_label = create_text_box("point", (625, 260), (130, 40), "#text_box_22_horizleft")
+        self.white_patches_tint_label = create_text_box("white patches tint", (275, 335), (130, 40),
+                                                        "#text_box_22_horizleft")
+        self.tint_label = create_text_box("tint", (450, 335), (130, 40), "#text_box_22_horizleft")
+        self.skin_label = create_text_box("skin", (625, 335), (130, 40), "#text_box_22_horizleft")
+        self.eye_colour1_label = create_text_box("eye colour 1", (275, 420), (130, 40), "#text_box_22_horizleft")
+        self.heterochromia_text = create_text_box("heterochromia", (465, 447), (130, 40), "#text_box_22_horizcenter")
+        self.eye_colour2_label = create_text_box("eye colour 2", (625, 420), (130, 40), "#text_box_22_horizleft")
+        self.accessory_label = create_text_box("accessory", (568, 495), (130, 40), "#text_box_22_horizleft")
+        self.pose_label = create_text_box("pose", (406, 495), (110, 40), "#text_box_22_horizleft")
+        self.reverse_label = create_text_box("reverse", (52, 495), (130, 40), "#text_box_22_horizleft")
         self.scar_message = create_text_box("Adding/removing scars will not affect a cat's conditions or history.",
-                                            (100, 650), (500, 40), "#text_box_26_horizleft")
-        self.scar1_label = create_text_box("scar 1", (100, 575), (150, 40), "#text_box_30_horizleft")
-        self.scar2_label = create_text_box("scar 2", (275, 575), (150, 40), "#text_box_30_horizleft")
-        self.scar3_label = create_text_box("scar 3", (450, 575), (150, 40), "#text_box_30_horizleft")
-        self.scar4_label = create_text_box("scar 4", (625, 575), (150, 40), "#text_box_30_horizleft")
+                                            (56, 650), (500, 40), "#text_box_26_horizleft")
+        self.scar1_label = create_text_box("scar 1", (56, 580), (130, 40), "#text_box_22_horizleft")
+        self.scar2_label = create_text_box("scar 2", (242, 580), (130, 40), "#text_box_22_horizleft")
+        self.scar3_label = create_text_box("scar 3", (428, 580), (130, 40), "#text_box_22_horizleft")
+        self.scar4_label = create_text_box("scar 4", (614, 580), (130, 40), "#text_box_22_horizleft")
 
     def setup_buttons(self):
         self.previous_cat_button = create_button((25, 25), (153, 30), get_arrow(2, arrow_left=True) + " Previous Cat", ButtonStyles.SQUOVAL, sound_id="page_flip")
         self.back_button = create_button((25, 60), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
         self.next_cat_button = create_button((622, 25), (153, 30), "Next Cat " + get_arrow(3, arrow_left=False), ButtonStyles.SQUOVAL, sound_id="page_flip")
-        self.pelt_length_left_button = create_button((265, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_right_button = create_button((385, 525), (30, 30), get_arrow(1, False),
+        self.pelt_length_left_button = create_button((224, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = create_button((324, 525), (30, 30), get_arrow(1, False),
                                                       ButtonStyles.ROUNDED_RECT)
-        self.pose_left_button = create_button((450, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pose_right_button = create_button((530, 525), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
-        self.reverse_button = create_button((155, 525), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = create_button((406, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = create_button((486, 525), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
+        self.reverse_button = create_button((102, 525), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
         self.reset_button = create_button((0, 65), (105, 30), "Reset", ButtonStyles.SQUOVAL, {"centerx": "centerx"})
 
     def setup_dropdowns(self):
-        self.pelt_name_dropdown = create_dropdown((275, 125), (150, 40),
+        self.pelt_name_dropdown = create_dropdown((275, 125), (130, 40),
                                                   create_options_list(self.pelt_names, "capitalize"),
                                                   get_selected_option(self.the_cat.pelt.name, "capitalize"))
-        self.pelt_colour_dropdown = create_dropdown((450, 125), (150, 40),
+        self.pelt_colour_dropdown = create_dropdown((450, 125), (130, 40),
                                                     create_options_list(self.pelt_colours, "upper"),
                                                     get_selected_option(self.the_cat.pelt.colour, "upper"))
-        self.pattern_dropdown = create_dropdown((625, 125), (150, 40), create_options_list(self.patterns, "upper"),
+        self.pattern_dropdown = create_dropdown((625, 125), (130, 40), create_options_list(self.patterns, "upper"),
                                                 get_selected_option(self.the_cat.pelt.pattern, "upper"))
-        self.tortie_base_dropdown = create_dropdown((275, 200), (150, 40),
+        self.tortie_base_dropdown = create_dropdown((275, 200), (130, 40),
                                                     create_options_list(self.tortie_bases, "lower"),
                                                     get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
-        self.tortie_colour_dropdown = create_dropdown((450, 200), (150, 40),
+        self.tortie_colour_dropdown = create_dropdown((450, 200), (130, 40),
                                                       create_options_list(self.tortie_colours, "upper"),
                                                       get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
-        self.tortie_pattern_dropdown = create_dropdown((625, 200), (150, 40),
+        self.tortie_pattern_dropdown = create_dropdown((625, 200), (130, 40),
                                                        create_options_list(self.tortie_bases, "lower"),
                                                        get_selected_option(self.the_cat.pelt.tortiepattern, "lower"))
-        self.white_patches_dropdown = create_dropdown((275, 285), (150, 40),
+        self.white_patches_dropdown = create_dropdown((275, 285), (130, 40),
                                                       create_options_list(self.white_patches, "upper"),
                                                       get_selected_option(self.the_cat.pelt.white_patches, "upper"))
-        self.vitiligo_dropdown = create_dropdown((450, 285), (150, 40),
+        self.vitiligo_dropdown = create_dropdown((450, 285), (130, 40),
                                                  create_options_list(self.vitiligo_patterns, "upper"),
                                                  get_selected_option(self.the_cat.pelt.vitiligo, "upper"))
-        self.points_dropdown = create_dropdown((625, 285), (150, 40),
+        self.points_dropdown = create_dropdown((625, 285), (130, 40),
                                                create_options_list(self.points_markings, "upper"),
                                                get_selected_option(self.the_cat.pelt.points, "upper"))
-        self.white_patches_tint_dropdown = create_dropdown((275, 360), (150, 40),
+        self.white_patches_tint_dropdown = create_dropdown((275, 360), (130, 40),
                                                            create_options_list(self.white_patches_tints, "lower"),
                                                            get_selected_option(self.the_cat.pelt.white_patches_tint,
                                                                                "lower"))
-        self.tint_dropdown = create_dropdown((450, 360), (150, 40), create_options_list(self.tints, "lower"),
+        self.tint_dropdown = create_dropdown((450, 360), (130, 40), create_options_list(self.tints, "lower"),
                                              get_selected_option(self.the_cat.pelt.tint, "lower"))
-        self.skin_dropdown = create_dropdown((625, 360), (150, 40), create_options_list(self.skins, "upper"),
+        self.skin_dropdown = create_dropdown((625, 360), (130, 40), create_options_list(self.skins, "upper"),
                                              get_selected_option(self.the_cat.pelt.skin, "upper"))
-        self.eye_colour1_dropdown = create_dropdown((275, 445), (150, 40),
+        self.eye_colour1_dropdown = create_dropdown((295, 445), (130, 40),
                                                     create_options_list(self.eye_colours, "upper"),
                                                     get_selected_option(self.the_cat.pelt.eye_colour, "upper"))
-        self.eye_colour2_dropdown = create_dropdown((625, 445), (150, 40),
+        self.eye_colour2_dropdown = create_dropdown((645, 445), (130, 40),
                                                     create_options_list(self.eye_colours, "upper"), (
                                                         get_selected_option(self.the_cat.pelt.eye_colour2,
                                                                             "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(
                                                             self.the_cat.pelt.eye_colour, "upper")))
-        self.accessory_dropdown = create_dropdown((595, 520), (180, 40), create_options_list(self.accessories, "upper"),
+        self.accessory_dropdown = create_dropdown((568, 520), (180, 40), create_options_list(self.accessories, "upper"),
                                                   get_selected_option(self.the_cat.pelt.accessory, "upper"), "dropup")
 
         scars = self.the_cat.pelt.scars
-        self.scar1_dropdown = create_dropdown((100, 605), (150, 40), create_options_list(self.scars, "upper"),
+        self.scar1_dropdown = create_dropdown((56, 605), (130, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars, "upper"), "dropup")
-        self.scar2_dropdown = create_dropdown((275, 605), (150, 40), create_options_list(self.scars, "upper"),
+        self.scar2_dropdown = create_dropdown((242, 605), (130, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[1:], "upper"), "dropup")
-        self.scar3_dropdown = create_dropdown((450, 605), (150, 40), create_options_list(self.scars, "upper"),
+        self.scar3_dropdown = create_dropdown((428, 605), (130, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[2:], "upper"), "dropup")
-        self.scar4_dropdown = create_dropdown((625, 605), (150, 40), create_options_list(self.scars, "upper"),
+        self.scar4_dropdown = create_dropdown((614, 605), (130, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[3:], "upper"), "dropup")
 
         self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1]
@@ -606,8 +606,8 @@ class CustomizeCatScreen(Screens):
 
     def update_pelt_length_display(self):
         self.kill_cat_element("pelt_length")
-        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (295, 523), (90, 40),
-                                                           "#text_box_30_horizcenter")
+        self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (254, 528), (70, 40),
+                                                           "#text_box_26_horizcenter")
 
     def check_if_tortie(self):
         dropdowns = [
@@ -625,15 +625,15 @@ class CustomizeCatScreen(Screens):
             self.the_cat.pelt.tortiecolour = self.tortie_colours[0]
             self.the_cat.pelt.tortiepattern = self.tortie_bases[0]
 
-            self.pattern_dropdown = create_dropdown((625, 125), (150, 40), create_options_list(self.patterns, "upper"),
+            self.pattern_dropdown = create_dropdown((625, 125), (130, 40), create_options_list(self.patterns, "upper"),
                                                     get_selected_option(self.the_cat.pelt.pattern, "upper"))
-            self.tortie_base_dropdown = create_dropdown((275, 200), (150, 40),
+            self.tortie_base_dropdown = create_dropdown((275, 200), (130, 40),
                                                         create_options_list(self.tortie_bases, "lower"),
                                                         get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
-            self.tortie_colour_dropdown = create_dropdown((450, 200), (150, 40),
+            self.tortie_colour_dropdown = create_dropdown((450, 200), (130, 40),
                                                           create_options_list(self.tortie_colours, "upper"),
                                                           get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
-            self.tortie_pattern_dropdown = create_dropdown((625, 200), (150, 40),
+            self.tortie_pattern_dropdown = create_dropdown((625, 200), (130, 40),
                                                            create_options_list(self.tortie_bases, "lower"),
                                                            get_selected_option(self.the_cat.pelt.tortiepattern,
                                                                                "lower"))
@@ -642,10 +642,10 @@ class CustomizeCatScreen(Screens):
             for dropdown in dropdowns:
                 dropdown.kill()
 
-            self.pattern_dropdown = create_dropdown((625, 125), (150, 40), "None", "None")
-            self.tortie_base_dropdown = create_dropdown((275, 200), (150, 40), "None", "None")
-            self.tortie_colour_dropdown = create_dropdown((450, 200), (150, 40), "None", "None")
-            self.tortie_pattern_dropdown = create_dropdown((625, 200), (150, 40), "None", "None")
+            self.pattern_dropdown = create_dropdown((625, 125), (130, 40), "None", "None")
+            self.tortie_base_dropdown = create_dropdown((275, 200), (130, 40), "None", "None")
+            self.tortie_colour_dropdown = create_dropdown((450, 200), (130, 40), "None", "None")
+            self.tortie_pattern_dropdown = create_dropdown((625, 200), (130, 40), "None", "None")
 
             self.the_cat.pelt.pattern = None
             self.the_cat.pelt.tortiebase = None
@@ -660,7 +660,7 @@ class CustomizeCatScreen(Screens):
         if self.the_cat.pelt.points is None and self.the_cat.pelt.white_patches is None:
             self.the_cat.pelt.white_patches_tint = "none"
             self.white_patches_tint_dropdown.kill()
-            self.white_patches_tint_dropdown = create_dropdown((275, 300), (150, 40),
+            self.white_patches_tint_dropdown = create_dropdown((275, 300), (130, 40),
                                                                create_options_list(self.white_patches_tints, "lower"),
                                                                get_selected_option(self.the_cat.pelt.white_patches_tint,
                                                                                    "lower"))
@@ -672,7 +672,7 @@ class CustomizeCatScreen(Screens):
         self.kill_cat_element("heterochromia_checkbox")
         checkbox_id = "@checked_checkbox" if self.heterochromia else "@unchecked_checkbox"
         self.heterochromia_checkbox = UIImageButton(
-            ui_scale(pygame.Rect((445, 450), (30, 30))),
+            ui_scale(pygame.Rect((465, 450), (30, 30))),
             "",
             object_id=checkbox_id,
             starting_height=2
@@ -687,7 +687,7 @@ class CustomizeCatScreen(Screens):
         else:
             self.the_cat.pelt.eye_colour2 = None
             self.eye_colour2_dropdown.kill()
-            self.eye_colour2_dropdown = create_dropdown((625, 445), (150, 40),
+            self.eye_colour2_dropdown = create_dropdown((645, 445), (130, 40),
                                                         create_options_list(self.eye_colours, "upper"), (
                                                             get_selected_option(self.the_cat.pelt.eye_colour2,
                                                                                 "upper") if self.the_cat.pelt.eye_colour2 else get_selected_option(
@@ -720,7 +720,7 @@ class CustomizeCatScreen(Screens):
         self.kill_cat_element("pose")
         pose_text = "none" if (self.the_cat.pelt.paralyzed or self.life_stage == "newborn") else str(
             self.cat_elements["current_pose"])
-        self.cat_elements["pose"] = create_text_box(pose_text, (480, 523), (50, 40), "#text_box_30_horizcenter")
+        self.cat_elements["pose"] = create_text_box(pose_text, (436, 528), (50, 40), "#text_box_26_horizcenter")
 
     def change_reverse(self):
         self.the_cat.pelt.reverse = not self.the_cat.pelt.reverse
@@ -730,7 +730,7 @@ class CustomizeCatScreen(Screens):
     def update_reverse_display(self):
         self.kill_cat_element("reverse")
         reverse_text = "true" if self.the_cat.pelt.reverse else "false"
-        self.cat_elements["reverse"] = create_text_box(reverse_text, (100, 523), (50, 40), "#text_box_30_horizcenter")
+        self.cat_elements["reverse"] = create_text_box(reverse_text, (52, 528), (40, 40), "#text_box_26_horizcenter")
 
     def exit_screen(self):
         self.kill_cat_elements()
