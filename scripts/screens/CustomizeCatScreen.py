@@ -12,6 +12,7 @@ from scripts.game_structure.game_essentials import game
 from scripts.game_structure.screen_settings import MANAGER
 from scripts.game_structure.ui_elements import UISurfaceImageButton, UIImageButton
 from scripts.screens.Screens import Screens
+from scripts.ui.generate_box import get_box, BoxStyles
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.get_arrow import get_arrow
 from scripts.utility import ui_scale, generate_sprite, ui_scale_dimensions, get_text_box_theme
@@ -88,6 +89,7 @@ class CustomizeCatScreen(Screens):
         self.previous_cat = None
         self.cat_elements = {}
         self.life_stage = None
+        self.frame_image = None
         self.cat_image = None
         self.previous_cat_button = None
         self.back_button = None
@@ -181,12 +183,17 @@ class CustomizeCatScreen(Screens):
 
     def screen_switches(self):
         super().screen_switches()
+        self.setup_labels()
+        self.frame_image = pygame_gui.elements.UIImage(
+            ui_scale(pygame.Rect((25, 150), (270, 270))), get_box(BoxStyles.FRAME, (250, 250)), starting_height=1
+        )
         self.build_cat_page()
+
 
     def build_cat_page(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
         (self.next_cat, self.previous_cat) = self.the_cat.determine_next_and_previous_cats()
-        self.setup_labels()
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 25), (250, 40), "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_buttons()
         self.setup_next_and_previous_cat()
         self.setup_dropdowns()
@@ -194,7 +201,6 @@ class CustomizeCatScreen(Screens):
         self.capture_initial_state()
 
     def setup_labels(self):
-        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 25), (250, 40), "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.pelt_name_label = create_text_box("pelt name", (275, 100), (130, 40), "#text_box_22_horizleft")
         self.pelt_colour_label = create_text_box("pelt colour", (450, 100), (130, 40), "#text_box_22_horizleft")
         self.pelt_length_label = create_text_box("pelt length", (224, 495), (130, 40), "#text_box_22_horizleft")
@@ -405,7 +411,8 @@ class CustomizeCatScreen(Screens):
 
     def update_ui_elements(self):
         self.kill_cat_elements()
-        self.setup_labels()
+        self.kill_buttons()
+        self.kill_dropdowns()
         self.setup_buttons()
         self.setup_dropdowns()
         self.setup_cat_elements()
@@ -419,7 +426,7 @@ class CustomizeCatScreen(Screens):
             self.cat_elements["cat_image"].kill()
         self.cat_image = generate_sprite(self.the_cat, self.life_stage, False, False, True, True)
         self.cat_elements["cat_image"] = pygame_gui.elements.UIImage(
-            ui_scale(pygame.Rect((25, 160), (250, 250))),
+            ui_scale(pygame.Rect((35, 160), (250, 250))),
             pygame.transform.scale(self.cat_image, ui_scale_dimensions((250, 250))),
             manager=MANAGER
         )
@@ -430,6 +437,8 @@ class CustomizeCatScreen(Screens):
                 if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
                     game.switches["cat"] = self.previous_cat
                     self.kill_cat_elements()
+                    self.kill_buttons()
+                    self.kill_dropdowns()
                     self.build_cat_page()
                 else:
                     print("invalid previous cat", self.previous_cat)
@@ -437,6 +446,8 @@ class CustomizeCatScreen(Screens):
                 if isinstance(Cat.fetch_cat(self.next_cat), Cat):
                     game.switches["cat"] = self.next_cat
                     self.kill_cat_elements()
+                    self.kill_buttons()
+                    self.kill_dropdowns()
                     self.build_cat_page()
                 else:
                     print("invalid next cat", self.previous_cat)
@@ -734,6 +745,10 @@ class CustomizeCatScreen(Screens):
 
     def exit_screen(self):
         self.kill_cat_elements()
+        self.kill_labels()
+        self.kill_buttons()
+        self.kill_dropdowns()
+        self.frame_image.kill()
 
     def kill_cat_elements(self):
         elements_to_kill = [
@@ -741,37 +756,39 @@ class CustomizeCatScreen(Screens):
         ]
         for element in elements_to_kill:
             self.kill_cat_element(element)
-        self.kill_ui_elements()
 
     def kill_cat_element(self, element_name):
         if element_name in self.cat_elements:
             self.cat_elements[element_name].kill()
 
-    def kill_ui_elements(self):
-        ui_elements = [
-            self.previous_cat_button, self.back_button, self.next_cat_button,
-            self.reset_button,
-            self.pelt_name_label, self.pelt_name_dropdown,
-            self.pelt_colour_label, self.pelt_colour_dropdown,
-            self.pelt_length_label, self.pelt_length_left_button, self.pelt_length_right_button,
-            self.pattern_label, self.pattern_dropdown,
-            self.tortie_base_label, self.tortie_base_dropdown,
-            self.tortie_colour_label, self.tortie_colour_dropdown,
-            self.tortie_pattern_label, self.tortie_pattern_dropdown,
-            self.white_patches_label, self.white_patches_dropdown,
-            self.vitiligo_label, self.vitiligo_dropdown,
-            self.points_label, self.points_dropdown,
-            self.skin_label, self.skin_dropdown,
-            self.white_patches_tint_label, self.white_patches_tint_dropdown,
-            self.tint_label, self.tint_dropdown,
-            self.eye_colour1_label, self.eye_colour2_label, self.heterochromia_text, self.eye_colour1_dropdown,
-            self.eye_colour2_dropdown,
-            self.pose_label, self.pose_left_button, self.pose_right_button,
-            self.reverse_label, self.reverse_button,
-            self.accessory_label, self.accessory_dropdown,
-            self.scar_message,
-            self.scar1_label, self.scar2_label, self.scar3_label, self.scar4_label,
-            self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown,
+    def kill_labels(self):
+        labels = [
+            self.pelt_name_label, self.pelt_colour_label, self.pelt_length_label,
+            self.pattern_label, self.tortie_base_label, self.tortie_colour_label, self.tortie_pattern_label,
+            self.white_patches_label, self.vitiligo_label, self.points_label, self.white_patches_tint_label,
+            self.tint_label, self.skin_label, self.eye_colour1_label, self.eye_colour2_label, self.heterochromia_text,
+            self.pose_label, self.reverse_label, self.accessory_label, self.scar_message, self.scar1_label,
+            self.scar2_label, self.scar3_label, self.scar4_label
         ]
-        for ui_element in ui_elements:
-            ui_element.kill()
+        for label in labels:
+            label.kill()
+
+    def kill_buttons(self):
+        buttons = [
+            self.previous_cat_button, self.back_button, self.next_cat_button, self.reset_button,
+            self.pelt_length_left_button, self.pelt_length_right_button, self.pose_left_button,
+            self.pose_right_button, self.reverse_button
+        ]
+        for button in buttons:
+            button.kill()
+
+    def kill_dropdowns(self):
+        dropdowns = [
+            self.pelt_name_dropdown, self.pelt_colour_dropdown, self.pattern_dropdown, self.tortie_base_dropdown,
+            self.tortie_colour_dropdown, self.tortie_pattern_dropdown, self.white_patches_dropdown, self.vitiligo_dropdown,
+            self.points_dropdown, self.skin_dropdown, self.white_patches_tint_dropdown, self.tint_dropdown,
+            self.eye_colour1_dropdown, self.eye_colour2_dropdown, self.accessory_dropdown,
+            self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown, self.scar4_dropdown
+        ]
+        for dropdown in dropdowns:
+            dropdown.kill()
