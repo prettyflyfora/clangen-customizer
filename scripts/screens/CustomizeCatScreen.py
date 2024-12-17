@@ -27,13 +27,15 @@ def create_text_box(text, pos, size, theme, anchors=None):
     )
 
 
-def create_button(pos, size, text, style):
+def create_button(pos, size, text, style, anchors=None, sound_id=None):
     return UISurfaceImageButton(
         ui_scale(Rect(pos, size)),
         text,
         get_button_dict(style, size),
         object_id=f"@buttonstyles_{style.name.lower()}",
-        manager=MANAGER
+        manager=MANAGER,
+        anchors=anchors,
+        sound_id=sound_id
     )
 
 
@@ -82,10 +84,14 @@ class CustomizeCatScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.the_cat = None
+        self.next_cat = None
+        self.previous_cat = None
         self.cat_elements = {}
         self.life_stage = None
         self.cat_image = None
+        self.previous_cat_button = None
         self.back_button = None
+        self.next_cat_button = None
         self.reset_button = None
         self.initial_state = None
         self.pelt_name_label = None
@@ -140,6 +146,7 @@ class CustomizeCatScreen(Screens):
         self.pose_left_button = None
         self.poses = None
         self.eye_colour1_label = None
+        self.heterochromia_text = None
         self.eye_colour2_label = None
         self.eye_colour1_dropdown = None
         self.eye_colour2_dropdown = None
@@ -174,14 +181,20 @@ class CustomizeCatScreen(Screens):
 
     def screen_switches(self):
         super().screen_switches()
+        self.build_cat_page()
+
+    def build_cat_page(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
+        (self.next_cat, self.previous_cat) = self.the_cat.determine_next_and_previous_cats()
         self.setup_labels()
         self.setup_buttons()
+        self.setup_next_and_previous_cat()
         self.setup_dropdowns()
         self.setup_cat()
         self.capture_initial_state()
 
     def setup_labels(self):
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 25), (250, 40), "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.pelt_name_label = create_text_box("pelt name", (275, 95), (150, 40), "#text_box_30_horizleft")
         self.pelt_colour_label = create_text_box("pelt colour", (450, 95), (150, 40), "#text_box_30_horizleft")
         self.pelt_length_label = create_text_box("pelt length", (265, 490), (150, 40), "#text_box_30_horizleft")
@@ -210,14 +223,16 @@ class CustomizeCatScreen(Screens):
         self.scar4_label = create_text_box("scar 4", (625, 575), (150, 40), "#text_box_30_horizleft")
 
     def setup_buttons(self):
-        self.back_button = create_button((25, 25), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
+        self.previous_cat_button = create_button((25, 25), (153, 30), get_arrow(2, arrow_left=True) + " Previous Cat", ButtonStyles.SQUOVAL, sound_id="page_flip")
+        self.back_button = create_button((25, 60), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
+        self.next_cat_button = create_button((622, 25), (153, 30), "Next Cat " + get_arrow(3, arrow_left=False), ButtonStyles.SQUOVAL, sound_id="page_flip")
         self.pelt_length_left_button = create_button((265, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pelt_length_right_button = create_button((385, 525), (30, 30), get_arrow(1, False),
                                                       ButtonStyles.ROUNDED_RECT)
         self.pose_left_button = create_button((450, 525), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
         self.pose_right_button = create_button((530, 525), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
         self.reverse_button = create_button((155, 525), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
-        self.reset_button = create_button((25, 60), (105, 30), "Reset", ButtonStyles.SQUOVAL)
+        self.reset_button = create_button((0, 65), (105, 30), "Reset", ButtonStyles.SQUOVAL, {"centerx": "centerx"})
 
     def setup_dropdowns(self):
         self.pelt_name_dropdown = create_dropdown((275, 125), (150, 40),
@@ -285,9 +300,18 @@ class CustomizeCatScreen(Screens):
         self.make_cat_sprite()
         self.setup_cat_elements()
 
+    def setup_next_and_previous_cat(self):
+        if self.next_cat == 0:
+            self.next_cat_button.disable()
+        else:
+            self.next_cat_button.enable()
+
+        if self.previous_cat == 0:
+            self.previous_cat_button.disable()
+        else:
+            self.previous_cat_button.enable()
+
     def setup_cat_elements(self):
-        self.cat_elements["cat_name"] = create_text_box(f"customize {self.the_cat.name}", (0, 25), (-1, 40),
-                                                        "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_pelt_length()
         self.setup_tortie()
         self.setup_white_patches_tint()
@@ -381,7 +405,6 @@ class CustomizeCatScreen(Screens):
 
     def update_ui_elements(self):
         self.kill_cat_elements()
-        self.back_button.kill()
         self.setup_labels()
         self.setup_buttons()
         self.setup_dropdowns()
@@ -403,7 +426,21 @@ class CustomizeCatScreen(Screens):
 
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
-            if event.ui_element == self.back_button:
+            if event.ui_element == self.previous_cat_button:
+                if isinstance(Cat.fetch_cat(self.previous_cat), Cat):
+                    game.switches["cat"] = self.previous_cat
+                    self.kill_cat_elements()
+                    self.build_cat_page()
+                else:
+                    print("invalid previous cat", self.previous_cat)
+            elif event.ui_element == self.next_cat_button:
+                if isinstance(Cat.fetch_cat(self.next_cat), Cat):
+                    game.switches["cat"] = self.next_cat
+                    self.kill_cat_elements()
+                    self.build_cat_page()
+                else:
+                    print("invalid next cat", self.previous_cat)
+            elif event.ui_element == self.back_button:
                 self.handle_back_button()
             elif event.ui_element == self.reset_button:
                 self.reset_attributes()
@@ -696,7 +733,6 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["reverse"] = create_text_box(reverse_text, (100, 523), (50, 40), "#text_box_30_horizcenter")
 
     def exit_screen(self):
-        self.back_button.kill()
         self.kill_cat_elements()
 
     def kill_cat_elements(self):
@@ -713,6 +749,7 @@ class CustomizeCatScreen(Screens):
 
     def kill_ui_elements(self):
         ui_elements = [
+            self.previous_cat_button, self.back_button, self.next_cat_button,
             self.reset_button,
             self.pelt_name_label, self.pelt_name_dropdown,
             self.pelt_colour_label, self.pelt_colour_dropdown,
