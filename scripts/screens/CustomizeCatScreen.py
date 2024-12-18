@@ -193,7 +193,7 @@ class CustomizeCatScreen(Screens):
     def build_cat_page(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
         (self.next_cat, self.previous_cat) = self.the_cat.determine_next_and_previous_cats()
-        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 60), (250, 40),
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (250, 40),
                                                         "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_buttons()
         self.setup_next_and_previous_cat()
@@ -216,7 +216,7 @@ class CustomizeCatScreen(Screens):
                                                         "#text_box_22_horizleft")
         self.tint_label = create_text_box("tint", (480, 335), (135, 40), "#text_box_22_horizleft")
         self.skin_label = create_text_box("skin", (640, 335), (135, 40), "#text_box_22_horizleft")
-        self.reset_message = create_text_box("Changes cannot be reset after leaving this cat's customize page.",
+        self.reset_message = create_text_box("Changes cannot be reset after leaving this cat's customization page.",
                                              (25, 395), (270, 60), "#text_box_26_horizcenter")
         self.eye_colour1_label = create_text_box("eye colour 1", (320, 420), (135, 40), "#text_box_22_horizleft")
         self.heterochromia_text = create_text_box("heterochromia", (495, 451), (135, 40), "#text_box_26_horizcenter")
@@ -418,7 +418,7 @@ class CustomizeCatScreen(Screens):
         self.kill_cat_elements()
         self.kill_buttons()
         self.kill_dropdowns()
-        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 60), (250, 40),
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (250, 40),
                                                         "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_buttons()
         self.setup_dropdowns()
