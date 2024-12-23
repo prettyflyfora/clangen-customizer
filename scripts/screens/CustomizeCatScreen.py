@@ -17,7 +17,9 @@ from scripts.ui.generate_button import get_button_dict, ButtonStyles
 from scripts.ui.get_arrow import get_arrow
 from scripts.utility import ui_scale, generate_sprite, ui_scale_dimensions, get_text_box_theme
 
+""" Cat customization UI """
 
+# generate UI elements
 def create_text_box(text, pos, size, theme, anchors=None):
     return UITextBox(
         text,
@@ -49,7 +51,7 @@ def create_dropdown(pos, size, options, selected_option, style=None):
         manager=MANAGER
     )
 
-
+# creates a list with display names and values of cat pelt attributes
 def create_options_list(attribute, case):
     if case == "upper":
         return [(option.capitalize(), option.upper()) for option in attribute]
@@ -58,10 +60,10 @@ def create_options_list(attribute, case):
     else:
         return [(option.capitalize(), option) for option in attribute]
 
-
+# returns the name and value; returns none if dropdown is disabled
 def get_selected_option(attribute, case):
     if isinstance(attribute, list):
-        if len(attribute) > 0:
+        if len(attribute) > 0:  # selects an option in scar dropdowns for any existing scars
             return attribute[0].capitalize(), attribute[0].upper()
         else:
             return "None", "NONE"
@@ -80,102 +82,122 @@ def get_selected_option(attribute, case):
         else:
             return "None", "None"
 
-
+# screen rendering
 class CustomizeCatScreen(Screens):
     def __init__(self, name=None):
         super().__init__(name)
         self.the_cat = None
         self.next_cat = None
         self.previous_cat = None
-        self.cat_elements = {}
         self.life_stage = None
+        self.initial_state = None
+        self.previous_pelt_name = None
+        self.heterochromia = False
+        self.initial_scar_selection = {}
+        self.previous_scar_selection = {}
+        self.cat_elements = {}
+
+        # UI elements
         self.frame_image = None
         self.cat_image = None
         self.previous_cat_button = None
         self.back_button = None
         self.next_cat_button = None
-        self.reset_button = None
-        self.initial_state = None
-        self.previous_pelt_name = None
+
+        self.pelt_names = list(Pelt.sprites_names.keys())
         self.pelt_name_label = None
         self.pelt_name_dropdown = None
-        self.pelt_names = list(Pelt.sprites_names.keys())
+
+        self.pelt_colours = Pelt.pelt_colours
         self.pelt_colour_label = None
         self.pelt_colour_dropdown = None
-        self.pelt_colours = Pelt.pelt_colours
-        self.pelt_length_label = None
-        self.pelt_length_left_button = None
-        self.pelt_length_right_button = None
-        self.pelt_lengths = Pelt.pelt_length
+
+        self.patterns = Pelt.tortiepatterns
         self.pattern_label = None
         self.pattern_dropdown = None
-        self.patterns = Pelt.tortiepatterns
+
+        self.tortie_bases = Pelt.tortiebases
         self.tortie_base_label = None
         self.tortie_base_dropdown = None
-        self.tortie_bases = Pelt.tortiebases
+
+        self.tortie_colours = self.pelt_colours
         self.tortie_colour_label = None
         self.tortie_colour_dropdown = None
-        self.tortie_colours = self.pelt_colours
+
+        self.tortie_patterns = self.tortie_bases
         self.tortie_pattern_label = None
         self.tortie_pattern_dropdown = None
-        self.tortie_patterns = self.tortie_bases
+
+        self.white_patches = Pelt.little_white + Pelt.mid_white + Pelt.high_white + Pelt.mostly_white
+        self.white_patches.append(Pelt.white_sprites[6]) # add fullwhite patch
+        self.white_patches.insert(0, "None")
         self.white_patches_label = None
         self.white_patches_dropdown = None
-        self.white_patches = Pelt.little_white + Pelt.mid_white + Pelt.high_white + Pelt.mostly_white
-        self.white_patches.append(Pelt.white_sprites[6])
-        self.white_patches.insert(0, "None")
+
+        self.vitiligo_patterns = Pelt.vit
+        self.vitiligo_patterns.insert(0, "None")
         self.vitiligo_label = None
         self.vitiligo_dropdown = None
-        self.vitiligo_patterns = [pattern.capitalize() for pattern in Pelt.vit]
-        self.vitiligo_patterns.insert(0, "None")
+
+        self.points_markings = Pelt.point_markings
+        self.points_markings.insert(0, "None")
         self.points_label = None
         self.points_dropdown = None
-        self.points_markings = [marking.capitalize() for marking in Pelt.point_markings]
-        self.points_markings.insert(0, "None")
+
+        self.white_patches_tints = ["None"] + [tint for tint in sprites.white_patches_tints["tint_colours"].keys() if tint != "none"]
         self.white_patches_tint_label = None
         self.white_patches_tint_dropdown = None
-        self.white_patches_tints = ["None"] + [tint for tint in sprites.white_patches_tints["tint_colours"].keys() if
-                                               tint != "none"]
-        self.tint_label = None
-        self.tint_dropdown = None
+
         self.tints = [tint for tint in list(sprites.cat_tints["tint_colours"].keys()) + list(
             sprites.cat_tints["dilute_tint_colours"].keys()) if tint != "none"]
         self.tints.insert(0, "None")
+        self.tint_label = None
+        self.tint_dropdown = None
+
+        self.skins = Pelt.skin_sprites
         self.skin_label = None
         self.skin_dropdown = None
-        self.skins = Pelt.skin_sprites
+
+        self.reset_message = None
+        self.reset_button = None
+
+        self.eye_colours = [colour.capitalize() for colour in Pelt.eye_colours]
+        self.eye_colour1_label = None
+        self.eye_colour1_dropdown = None
+        self.heterochromia_text = None
+        self.eye_colour2_label = None
+        self.eye_colour2_dropdown = None
+
+        self.reverse_label = None
+        self.reverse_button = None
+
+        self.pelt_lengths = Pelt.pelt_length
+        self.pelt_length_label = None
+        self.pelt_length_left_button = None
+        self.pelt_length_right_button = None
+
+        self.poses = None
         self.pose_label = None
         self.pose_right_button = None
         self.pose_left_button = None
-        self.poses = None
-        self.reset_message = None
-        self.eye_colour1_label = None
-        self.heterochromia_text = None
-        self.eye_colour2_label = None
-        self.eye_colour1_dropdown = None
-        self.eye_colour2_dropdown = None
-        self.heterochromia = False
-        self.eye_colours = [colour.capitalize() for colour in Pelt.eye_colours]
-        self.reverse_label = None
-        self.reverse_button = None
-        self.accessory_label = None
-        self.accessory_dropdown = None
+
         self.accessories = ["None"] + list(
             dict.fromkeys(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories + Pelt.collars))
+        self.accessory_label = None
+        self.accessory_dropdown = None
+
+        self.scars = ["None"] + Pelt.scars1 + Pelt.scars2 + Pelt.scars3
         self.scar_message = None
         self.scar1_label = None
-        self.scar2_label = None
-        self.scar3_label = None
-        self.scar4_label = None
         self.scar1_dropdown = None
+        self.scar2_label = None
         self.scar2_dropdown = None
+        self.scar3_label = None
         self.scar3_dropdown = None
+        self.scar4_label = None
         self.scar4_dropdown = None
-        self.scars = ["None"] + Pelt.scars1 + Pelt.scars2 + Pelt.scars3
-        self.initial_scar_selection = {}
-        self.previous_scar_selection = {}
 
-    # for testing purposes
+    # prints attributes for testing
     def print_pelt_attributes(self):
         print("\n*** PELT START ***")
         pelt_attributes = vars(self.the_cat.pelt)
@@ -194,7 +216,7 @@ class CustomizeCatScreen(Screens):
     def build_cat_page(self):
         self.the_cat = Cat.fetch_cat(game.switches["cat"])
         (self.next_cat, self.previous_cat) = self.the_cat.determine_next_and_previous_cats()
-        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (250, 40),
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (400, 40),
                                                         "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_buttons()
         self.setup_next_and_previous_cat()
@@ -203,6 +225,9 @@ class CustomizeCatScreen(Screens):
         self.capture_initial_state()
 
     def setup_labels(self):
+        """------------------------------------------------------------------------------------------------------------#
+        #                                              LABEL SETUP START                                               #
+        # ------------------------------------------------------------------------------------------------------------"""
         self.pelt_name_label = create_text_box("pelt name", (320, 100), (135, 40), "#text_box_22_horizleft")
         self.pelt_colour_label = create_text_box("pelt colour", (480, 100), (135, 40), "#text_box_22_horizleft")
         self.pelt_length_label = create_text_box("pelt length", (224, 500), (135, 40), "#text_box_22_horizleft")
@@ -231,6 +256,9 @@ class CustomizeCatScreen(Screens):
         self.scar2_label = create_text_box("scar 2", (242, 580), (135, 40), "#text_box_22_horizleft")
         self.scar3_label = create_text_box("scar 3", (428, 580), (135, 40), "#text_box_22_horizleft")
         self.scar4_label = create_text_box("scar 4", (614, 580), (135, 40), "#text_box_22_horizleft")
+        """------------------------------------------------------------------------------------------------------------#
+        #                                              LABEL SETUP END                                                 #
+        # ------------------------------------------------------------------------------------------------------------"""
 
     def setup_buttons(self):
         self.previous_cat_button = create_button((25, 25), (153, 30), get_arrow(2, arrow_left=True) + " Previous Cat",
@@ -247,6 +275,9 @@ class CustomizeCatScreen(Screens):
         self.reset_button = create_button((110, 450), (105, 30), "Reset", ButtonStyles.SQUOVAL)
 
     def setup_dropdowns(self):
+        """------------------------------------------------------------------------------------------------------------#
+        #                                              DROPDOWN SETUP START                                            #
+        # ------------------------------------------------------------------------------------------------------------"""
         self.pelt_name_dropdown = create_dropdown((320, 125), (135, 40),
                                                   create_options_list(self.pelt_names, "capitalize"),
                                                   get_selected_option(self.the_cat.pelt.name, "capitalize"))
@@ -301,7 +332,11 @@ class CustomizeCatScreen(Screens):
                                               get_selected_option(scars[2:], "upper"), "dropup")
         self.scar4_dropdown = create_dropdown((610, 605), (135, 40), create_options_list(self.scars, "upper"),
                                               get_selected_option(scars[3:], "upper"), "dropup")
+        """------------------------------------------------------------------------------------------------------------#
+        #                                              DROPDOWN SETUP END                                              #
+        # ------------------------------------------------------------------------------------------------------------"""
 
+        # stores current scar state
         self.initial_scar_selection[self.scar1_dropdown] = self.scar1_dropdown.selected_option[1]
         self.initial_scar_selection[self.scar2_dropdown] = self.scar2_dropdown.selected_option[1]
         self.initial_scar_selection[self.scar3_dropdown] = self.scar3_dropdown.selected_option[1]
@@ -325,14 +360,8 @@ class CustomizeCatScreen(Screens):
             self.previous_cat_button.enable()
 
     def setup_cat_elements(self):
-        self.setup_pelt_length()
-        self.setup_tortie()
-        self.setup_white_patches_tint()
-        self.setup_eye_colours()
-        self.setup_accessory()
-        self.setup_poses()
-        self.setup_reverse()
-        self.capture_initial_state()
+        (self.setup_pelt_length(), self.setup_tortie(), self.setup_white_patches_tint(), self.setup_eye_colours(),
+         self.setup_accessory(), self.setup_poses(), self.setup_reverse(), self.capture_initial_state())
 
     def setup_pelt_length(self):
         self.cat_elements["pelt_length_index"] = self.pelt_lengths.index(self.the_cat.pelt.length)
@@ -373,6 +402,8 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["reverse_value"] = self.the_cat.pelt.reverse
         self.update_reverse_display()
 
+    # store state for reset
+    # TODO: append values to a list with identifier to retain values between cat pages
     def capture_initial_state(self):
         self.initial_state = {
             "name": self.the_cat.pelt.name,
@@ -420,8 +451,7 @@ class CustomizeCatScreen(Screens):
         self.kill_cat_elements()
         self.kill_buttons()
         self.kill_dropdowns()
-        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (250, 40),
-                                                        "#text_box_34_horizcenter", {"centerx": "centerx"})
+        self.cat_elements["cat_name"] = create_text_box("customize " + str(self.the_cat.name), (0, 40), (400, 40), "#text_box_34_horizcenter", {"centerx": "centerx"})
         self.setup_buttons()
         self.setup_dropdowns()
         self.setup_cat_elements()
@@ -440,6 +470,7 @@ class CustomizeCatScreen(Screens):
             manager=MANAGER
         )
 
+    # TODO: create a subclass for dropdowns, create a function to regenerate dropdowns with specific data
     def handle_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_START_PRESS:
             if event.ui_element == self.previous_cat_button:
@@ -513,10 +544,10 @@ class CustomizeCatScreen(Screens):
         self.make_cat_sprite()
 
     def handle_back_button(self):
-        if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour:
+        if self.the_cat.pelt.eye_colour2 == self.the_cat.pelt.eye_colour: # remove second eye colour if same as first
             self.the_cat.pelt.eye_colour2 = None
 
-        self.the_cat.pelt.scars = list(set(self.the_cat.pelt.scars))
+        self.the_cat.pelt.scars = list(set(self.the_cat.pelt.scars)) # deduplicate scars
 
         self.change_screen("profile screen")
 
@@ -581,35 +612,36 @@ class CustomizeCatScreen(Screens):
         previous_selection = self.previous_scar_selection.get(dropdown, self.initial_scar_selection[dropdown])
 
         if previous_selection != "NONE" and previous_selection in self.the_cat.pelt.scars:
-            self.the_cat.pelt.scars.remove(previous_selection)
+            self.the_cat.pelt.scars.remove(previous_selection) # remove previous selection
 
         if selected_option != "NONE":
-            self.the_cat.pelt.scars.append(selected_option)
+            self.the_cat.pelt.scars.append(selected_option) # add new selection
 
         self.previous_scar_selection[dropdown] = selected_option
 
         self.make_cat_sprite()
 
     def handle_sprites_for_pelt_length(self, previous_length):
+        # check if pelt length has changed from or to long
         is_long_to_not_long = previous_length == "long" and self.the_cat.pelt.length != "long"
         is_not_long_to_long = previous_length != "long" and self.the_cat.pelt.length == "long"
 
         if is_long_to_not_long or is_not_long_to_long:
             self.set_poses()
-            if self.life_stage != "newborn" and not self.the_cat.pelt.paralyzed:
+            if self.life_stage != "newborn" and not self.the_cat.pelt.paralyzed: # check for special statuses
                 self.cat_elements["current_pose"] = self.poses[0]
 
             if self.life_stage == "adult":
-                if not self.the_cat.pelt.paralyzed:
+                if not self.the_cat.pelt.paralyzed: # update adult sprites to current pose if not paralyzed
                     self.the_cat.pelt.cat_sprites["young adult"] = self.cat_elements["current_pose"]
                     self.the_cat.pelt.cat_sprites["adult"] = self.cat_elements["current_pose"]
                     self.the_cat.pelt.cat_sprites["senior adult"] = self.cat_elements["current_pose"]
-                else:
+                else: # update adult sprites to random value if paralyzed
                     random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
                     self.the_cat.pelt.cat_sprites["young adult"] = random_adult_sprite
                     self.the_cat.pelt.cat_sprites["adult"] = random_adult_sprite
                     self.the_cat.pelt.cat_sprites["senior adult"] = random_adult_sprite
-            else:
+            else: # update adult sprites to random value based on pelt length
                 random_adult_sprite = random.randint(6, 8) if previous_length == "long" else random.randint(9, 11)
                 self.the_cat.pelt.cat_sprites["young adult"] = random_adult_sprite
                 self.the_cat.pelt.cat_sprites["adult"] = random_adult_sprite
