@@ -96,6 +96,7 @@ class CustomizeCatScreen(Screens):
         self.next_cat_button = None
         self.reset_button = None
         self.initial_state = None
+        self.previous_pelt_name = None
         self.pelt_name_label = None
         self.pelt_name_dropdown = None
         self.pelt_names = list(Pelt.sprites_names.keys())
@@ -265,7 +266,7 @@ class CustomizeCatScreen(Screens):
                                                        get_selected_option(self.the_cat.pelt.tortiepattern, "lower"))
         self.white_patches_dropdown = create_dropdown((320, 285), (135, 40),
                                                       create_options_list(self.white_patches, "upper"),
-                                                      get_selected_option(self.the_cat.pelt.white_patches, "upper"))
+                                                      get_selected_option(self.the_cat.pelt.white_patches, "upper"), "smaller_font")
         self.vitiligo_dropdown = create_dropdown((480, 285), (135, 40),
                                                  create_options_list(self.vitiligo_patterns, "upper"),
                                                  get_selected_option(self.the_cat.pelt.vitiligo, "upper"))
@@ -310,6 +311,7 @@ class CustomizeCatScreen(Screens):
         self.get_cat_age()
         self.make_cat_sprite()
         self.setup_cat_elements()
+        self.previous_pelt_name = self.the_cat.pelt.name
 
     def setup_next_and_previous_cat(self):
         if self.next_cat == 0:
@@ -519,8 +521,10 @@ class CustomizeCatScreen(Screens):
         self.change_screen("profile screen")
 
     def handle_pelt_name_dropdown(self):
-        self.the_cat.pelt.name = self.pelt_name_dropdown.selected_option[1]
-        self.check_if_tortie()
+        new_pelt_name = self.pelt_name_dropdown.selected_option[1]
+        self.check_if_tortie(new_pelt_name, self.previous_pelt_name)
+        self.the_cat.pelt.name = new_pelt_name
+        self.previous_pelt_name = new_pelt_name
         self.make_cat_sprite()
 
     def handle_pelt_length_buttons(self, button):
@@ -627,35 +631,40 @@ class CustomizeCatScreen(Screens):
         self.cat_elements["pelt_length"] = create_text_box(self.the_cat.pelt.length.lower(), (254, 530), (70, 40),
                                                            "#text_box_26_horizcenter")
 
-    def check_if_tortie(self):
+    def check_if_tortie(self, new_pelt_name, previous_pelt_name):
         dropdowns = [
             self.pattern_dropdown,
             self.tortie_base_dropdown,
             self.tortie_colour_dropdown,
             self.tortie_pattern_dropdown
         ]
-        if self.the_cat.pelt.name in ["Calico", "Tortie"]:
-            for dropdown in dropdowns:
-                dropdown.kill()
+        if new_pelt_name in ["Calico", "Tortie"]:
+            if previous_pelt_name not in ["Calico", "Tortie"]:
+                for dropdown in dropdowns:
+                    dropdown.kill()
 
-            self.the_cat.pelt.pattern = self.patterns[0]
-            self.the_cat.pelt.tortiebase = self.tortie_bases[0]
-            self.the_cat.pelt.tortiecolour = self.tortie_colours[0]
-            self.the_cat.pelt.tortiepattern = self.tortie_bases[0]
+                self.the_cat.pelt.pattern = self.patterns[0]
+                self.the_cat.pelt.tortiebase = previous_pelt_name.lower()
+                self.the_cat.pelt.tortiecolour = self.tortie_colours[0]
+                self.the_cat.pelt.tortiepattern = self.tortie_bases[0]
 
-            self.pattern_dropdown = create_dropdown((640, 125), (135, 40), create_options_list(self.patterns, "upper"),
-                                                    get_selected_option(self.the_cat.pelt.pattern, "upper"))
-            self.tortie_base_dropdown = create_dropdown((320, 200), (135, 40),
-                                                        create_options_list(self.tortie_bases, "lower"),
-                                                        get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
-            self.tortie_colour_dropdown = create_dropdown((480, 200), (135, 40),
-                                                          create_options_list(self.tortie_colours, "upper"),
-                                                          get_selected_option(self.the_cat.pelt.tortiecolour, "upper"))
-            self.tortie_pattern_dropdown = create_dropdown((640, 200), (135, 40),
-                                                           create_options_list(self.tortie_bases, "lower"),
-                                                           get_selected_option(self.the_cat.pelt.tortiepattern,
-                                                                               "lower"))
+                self.pattern_dropdown = create_dropdown((640, 125), (135, 40),
+                                                        create_options_list(self.patterns, "upper"),
+                                                        get_selected_option(self.the_cat.pelt.pattern, "upper"))
+                self.tortie_base_dropdown = create_dropdown((320, 200), (135, 40),
+                                                            create_options_list(self.tortie_bases, "lower"),
+                                                            get_selected_option(self.the_cat.pelt.tortiebase, "lower"))
+                self.tortie_colour_dropdown = create_dropdown((480, 200), (135, 40),
+                                                              create_options_list(self.tortie_colours, "upper"),
+                                                              get_selected_option(self.the_cat.pelt.tortiecolour,
+                                                                                  "upper"))
+                self.tortie_pattern_dropdown = create_dropdown((640, 200), (135, 40),
+                                                               create_options_list(self.tortie_bases, "lower"),
+                                                               get_selected_option(self.the_cat.pelt.tortiepattern,
+                                                                                   "lower"))
 
+                for dropdown in dropdowns:
+                    dropdown.enable()
         else:
             for dropdown in dropdowns:
                 dropdown.kill()
