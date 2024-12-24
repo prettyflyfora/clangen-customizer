@@ -88,12 +88,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_Linux64_glibc2.31+.tar.xz.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
-        run: butler push ClangenCustomizer_Linux64_glibc2.31+.tar.xz sablesteel/clan-gen-fan-edit:linux64_glibc_231 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_Linux64_glibc2.31+.tar.xz prettyflyfora/customizer:linux64_glibc_231 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -182,12 +182,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_Linux64_glibc2.35+.tar.xz.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
-        run: butler push ClangenCustomizer_Linux64_glibc2.35+.tar.xz sablesteel/clan-gen-fan-edit:linux64_glibc_235 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_Linux64_glibc2.35+.tar.xz prettyflyfora/customizer:linux64_glibc_235 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -300,12 +300,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_Win32.zip.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: butler push ClangenCustomizer_Win32.zip sablesteel/clan-gen-fan-edit:win32 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_Win32.zip prettyflyfora/customizer:win32 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -394,7 +394,7 @@ jobs:
       - name: Create archive (.zip)
         run: |
           cp dist/ClangenCustomizer/_internal/.itch.toml dist/ 
-          tar.exe -a -c -f ClangenCustomizer_Win64.zip -C dist ClangenCustomizer .itch.toml
+          tar.exe -a -c -f ClangenCustomizer_Win64.zip -C dist Clangen .itch.toml
       - uses: actions/upload-artifact@v4
         with:
           name: ClangenCustomizer_Win64
@@ -424,12 +424,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_Win64.zip.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
-        run: butler push ClangenCustomizer_Win64.zip sablesteel/clan-gen-fan-edit:win64 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_Win64.zip prettyflyfora/customizer:win64 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -518,7 +518,7 @@ jobs:
       - name: Create archive (.zip)
         run: |
           cp dist/ClangenCustomizer/_internal/.itch.toml dist/ 
-          tar.exe -a -c -f ClangenCustomizer_Win64_Windows10+.zip -C dist ClangenCustomizer .itch.toml
+          tar.exe -a -c -f ClangenCustomizer_Win64_Windows10+.zip -C dist Clangen .itch.toml
       - uses: actions/upload-artifact@v4
         with:
           name: ClangenCustomizer_Win64_Windows10+
@@ -548,12 +548,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_Win64_Windows10+.zip.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
-        run: butler push ClangenCustomizer_Win64_Windows10+.zip sablesteel/clan-gen-fan-edit:win64_10 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_Win64_Windows10+.zip prettyflyfora/customizer:win64_10 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -637,7 +637,7 @@ jobs:
         if: ${{ env.update_api_push_token != '' && (github.ref == 'refs/heads/development' || startsWith(github.ref, 'refs/tags/')) }}
         run: |
           zip ClangenCustomizer_macOS64.dmg.zip ./ClangenCustomizer_macOS64.dmg
-          gpg --output ClangenCustomizer_macOS64.dmg.zip.sig --detach-sig -a ClangenCustomizer_macOS64.dmg.zip
+          gpg --output Clangen_macOS64.dmg.zip.sig --detach-sig -a ClangenCustomizer_macOS64.dmg.zip
           curl -X 'POST' \
             'https://clangen.io/api/v1/Update/Channels/${{ env.RELEASE_CHANNEL }}/Releases/${{ env.VERSION_NUMBER }}/Appoint' \
             -H 'X-API-Key: ${{ secrets.UPDATE_API_DEPLOY_KEY }}' \
@@ -651,12 +651,12 @@ jobs:
             -F 'fileBundle=@ClangenCustomizer_macOS64.dmg.zip.sig' \
             --http1.1
       - name: Set up butler
-        uses: prettyflyfora/setup-butler@customizerv1
+        uses: thlumyn/setup-butler@clangen
       - name: Upload build to itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         if: startsWith(github.ref, 'refs/tags/') && env.BUTLER_API_KEY != ''
-        run: butler push ClangenCustomizer_macOS64.dmg sablesteel/clan-gen-fan-edit:osx64 --userversion "${{ env.VERSION_NUMBER }}"
+        run: butler push ClangenCustomizer_macOS64.dmg prettyflyfora/customizer:osx64 --userversion "${{ env.VERSION_NUMBER }}"
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
