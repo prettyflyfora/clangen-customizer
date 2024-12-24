@@ -1,5 +1,8 @@
 <strong>v0.12.2</strong>
 
+<b>Cat Customizer</b>
+- I put my hands up in the air sometimes
+
 <b>QoL</b>
 - Changed fullscreen toggle to F11
 
