@@ -394,7 +394,7 @@ jobs:
       - name: Create archive (.zip)
         run: |
           cp dist/ClangenCustomizer/_internal/.itch.toml dist/ 
-          tar.exe -a -c -f ClangenCustomizer_Win64.zip -C dist Clangen .itch.toml
+          tar.exe -a -c -f ClangenCustomizer_Win64.zip -C dist ClangenCustomizer .itch.toml
       - uses: actions/upload-artifact@v4
         with:
           name: ClangenCustomizer_Win64
@@ -518,7 +518,7 @@ jobs:
       - name: Create archive (.zip)
         run: |
           cp dist/ClangenCustomizer/_internal/.itch.toml dist/ 
-          tar.exe -a -c -f ClangenCustomizer_Win64_Windows10+.zip -C dist Clangen .itch.toml
+          tar.exe -a -c -f ClangenCustomizer_Win64_Windows10+.zip -C dist ClangenCustomizer .itch.toml
       - uses: actions/upload-artifact@v4
         with:
           name: ClangenCustomizer_Win64_Windows10+
