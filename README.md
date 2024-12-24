@@ -2,6 +2,9 @@
 This mod allows you to customize your cats' appearances in game. This is a standalone mod and should be compatible with most add-ons.
 Ideally, this mod will stay up to date with each stable release.
 
+## Download
+Current release is based on Clangen v0.12.2: <b>[click here](https://github.com/prettyflyfora/clangen-customizer/releases/tag/v0.12.2)</b>
+
 ## Running from source
 Please follow the instructions on the [ClanGen repo page](https://github.com/ClanGenOfficial/clangen) to set up your environment. This mod requires the use of Poetry for dependencies.
 
