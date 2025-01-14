@@ -14,7 +14,7 @@ from scripts.game_structure.ui_elements import UISurfaceImageButton, UIImageButt
 from scripts.screens.Screens import Screens
 from scripts.ui.generate_box import get_box, BoxStyles
 from scripts.ui.generate_button import get_button_dict, ButtonStyles
-from scripts.ui.get_arrow import get_arrow
+from scripts.ui.icon import Icon
 from scripts.utility import ui_scale, generate_sprite, ui_scale_dimensions, get_text_box_theme
 
 """ Cat customization UI """
@@ -261,16 +261,16 @@ class CustomizeCatScreen(Screens):
         # ------------------------------------------------------------------------------------------------------------"""
 
     def setup_buttons(self):
-        self.previous_cat_button = create_button((25, 25), (153, 30), get_arrow(2, arrow_left=True) + " Previous Cat",
+        self.previous_cat_button = create_button((25, 25), (153, 30), "buttons.previous_cat",
                                                  ButtonStyles.SQUOVAL, sound_id="page_flip")
-        self.back_button = create_button((25, 60), (105, 30), get_arrow(2) + " Back", ButtonStyles.SQUOVAL)
-        self.next_cat_button = create_button((622, 25), (153, 30), "Next Cat " + get_arrow(3, arrow_left=False),
+        self.back_button = create_button((25, 60), (105, 30), "buttons.back", ButtonStyles.SQUOVAL)
+        self.next_cat_button = create_button((622, 25), (153, 30), "buttons.next_cat",
                                              ButtonStyles.SQUOVAL, sound_id="page_flip")
-        self.pelt_length_left_button = create_button((224, 530), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pelt_length_right_button = create_button((324, 530), (30, 30), get_arrow(1, False),
+        self.pelt_length_left_button = create_button((224, 530), (30, 30), Icon.ARROW_LEFT, ButtonStyles.ROUNDED_RECT)
+        self.pelt_length_right_button = create_button((324, 530), (30, 30), Icon.ARROW_RIGHT,
                                                       ButtonStyles.ROUNDED_RECT)
-        self.pose_left_button = create_button((406, 530), (30, 30), get_arrow(1), ButtonStyles.ROUNDED_RECT)
-        self.pose_right_button = create_button((486, 530), (30, 30), get_arrow(1, False), ButtonStyles.ROUNDED_RECT)
+        self.pose_left_button = create_button((406, 530), (30, 30), Icon.ARROW_LEFT, ButtonStyles.ROUNDED_RECT)
+        self.pose_right_button = create_button((486, 530), (30, 30), Icon.ARROW_RIGHT, ButtonStyles.ROUNDED_RECT)
         self.reverse_button = create_button((105, 530), (70, 30), "Reverse", ButtonStyles.ROUNDED_RECT)
         self.reset_button = create_button((110, 450), (105, 30), "Reset", ButtonStyles.SQUOVAL)
 
