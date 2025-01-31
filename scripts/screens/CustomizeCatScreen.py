@@ -1,6 +1,5 @@
-import copy
 import random
-from copy import deepcopy
+from copy import copy
 
 import pygame
 import pygame_gui
@@ -106,64 +105,63 @@ class CustomizeCatScreen(Screens):
         self.back_button = None
         self.next_cat_button = None
 
-        self.pelt_names = copy.deepcopy(list(Pelt.sprites_names.keys()))
+        self.pelt_names = list(Pelt.sprites_names.keys())
         self.pelt_name_label = None
         self.pelt_name_dropdown = None
 
-        self.pelt_colours = copy.deepcopy(Pelt.pelt_colours)
+        self.pelt_colours = copy(Pelt.pelt_colours)
         self.pelt_colour_label = None
         self.pelt_colour_dropdown = None
 
-        self.patterns = copy.deepcopy(Pelt.tortiepatterns)
+        self.patterns = copy(Pelt.tortiepatterns)
         self.pattern_label = None
         self.pattern_dropdown = None
 
-        self.tortie_bases = copy.deepcopy(Pelt.tortiebases)
+        self.tortie_bases = copy(Pelt.tortiebases)
         self.tortie_base_label = None
         self.tortie_base_dropdown = None
 
-        self.tortie_colours = copy.deepcopy(Pelt.pelt_colours)
+        self.tortie_colours = copy(Pelt.pelt_colours)
         self.tortie_colour_label = None
         self.tortie_colour_dropdown = None
 
-        self.tortie_patterns = copy.deepcopy(Pelt.tortiebases)
+        self.tortie_patterns = copy(Pelt.tortiepatterns)
         self.tortie_pattern_label = None
         self.tortie_pattern_dropdown = None
 
-        self.white_patches = copy.deepcopy(Pelt.little_white + Pelt.mid_white + Pelt.high_white + Pelt.mostly_white)
-        self.white_patches.append(copy.deepcopy(Pelt.white_sprites[6])) # add fullwhite patch
+        self.white_patches = copy(Pelt.little_white + Pelt.mid_white + Pelt.high_white + Pelt.mostly_white)
+        self.white_patches.append(Pelt.white_sprites[6]) # add fullwhite patch
         self.white_patches.insert(0, "None")
         self.white_patches_label = None
         self.white_patches_dropdown = None
 
-        self.vitiligo_patterns = copy.deepcopy(Pelt.vit)
+        self.vitiligo_patterns = copy(Pelt.vit)
         self.vitiligo_patterns.insert(0, "None")
         self.vitiligo_label = None
         self.vitiligo_dropdown = None
 
-        self.points_markings = copy.deepcopy(Pelt.point_markings)
+        self.points_markings = copy(Pelt.point_markings)
         self.points_markings.insert(0, "None")
         self.points_label = None
         self.points_dropdown = None
 
-        self.white_patches_tints = ["None"] + [tint for tint in copy.deepcopy(list(sprites.white_patches_tints["tint_colours"].keys())) if tint != "none"]
+        self.white_patches_tints = ["None"] + [tint for tint in list(sprites.white_patches_tints["tint_colours"].keys()) if tint != "none"]
         self.white_patches_tint_label = None
         self.white_patches_tint_dropdown = None
 
-        self.tints = [tint for tint in copy.deepcopy(list(sprites.cat_tints["tint_colours"].keys())) + list(
-            copy.deepcopy(list(sprites.cat_tints["dilute_tint_colours"].keys()))) if tint != "none"]
-        self.tints.insert(0, "None")
+        self.tints = ["None"] + [tint for tint in list(sprites.cat_tints["tint_colours"].keys()) +
+                      list(sprites.cat_tints["dilute_tint_colours"].keys()) if tint != "none"]
         self.tint_label = None
         self.tint_dropdown = None
 
-        self.skins = copy.deepcopy(Pelt.skin_sprites)
+        self.skins = copy(Pelt.skin_sprites)
         self.skin_label = None
         self.skin_dropdown = None
 
         self.reset_message = None
         self.reset_button = None
 
-        self.eye_colours = [colour.capitalize() for colour in copy.deepcopy(Pelt.eye_colours)]
+        self.eye_colours = [colour.capitalize() for colour in copy(Pelt.eye_colours)]
         self.eye_colour1_label = None
         self.eye_colour1_dropdown = None
         self.heterochromia_text = None
@@ -173,7 +171,7 @@ class CustomizeCatScreen(Screens):
         self.reverse_label = None
         self.reverse_button = None
 
-        self.pelt_lengths = copy.deepcopy(Pelt.pelt_length)
+        self.pelt_lengths = copy(Pelt.pelt_length)
         self.pelt_length_label = None
         self.pelt_length_left_button = None
         self.pelt_length_right_button = None
@@ -184,11 +182,11 @@ class CustomizeCatScreen(Screens):
         self.pose_left_button = None
 
         self.accessories = ["None"] + list(
-            dict.fromkeys(copy.deepcopy(Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories) + Pelt.collars))
+            dict.fromkeys((Pelt.plant_accessories + Pelt.wild_accessories + Pelt.tail_accessories) + Pelt.collars))
         self.accessory_label = None
         self.accessory_dropdown = None
 
-        self.scars = ["None"] + copy.deepcopy(Pelt.scars1 + Pelt.scars2 + Pelt.scars3)
+        self.scars = ["None"] + copy(Pelt.scars1 + Pelt.scars2 + Pelt.scars3)
         self.scar_message = None
         self.scar1_label = None
         self.scar1_dropdown = None
