@@ -503,7 +503,7 @@ class CustomizeCatScreen(Screens):
                 self.handle_pose_buttons(event.ui_element)
             elif event.ui_element == self.reverse_button:
                 self.change_reverse()
-            self.print_pelt_attributes()  # for testing purposes
+            # self.print_pelt_attributes()  # for testing purposes
         elif event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
             if event.ui_element == self.pelt_name_dropdown:
                 self.handle_pelt_name_dropdown()
@@ -536,7 +536,7 @@ class CustomizeCatScreen(Screens):
             elif event.ui_element in [self.scar1_dropdown, self.scar2_dropdown, self.scar3_dropdown,
                                       self.scar4_dropdown]:
                 self.handle_scar_dropdown(event.ui_element)
-            self.print_pelt_attributes()  # for testing purposes
+            # self.print_pelt_attributes()  # for testing purposes
 
     def handle_dropdown_change(self, dropdown, attribute):
         selected_option = dropdown.selected_option[1]
